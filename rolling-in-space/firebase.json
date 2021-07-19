@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/rolling-in-space",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
