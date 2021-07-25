@@ -9,7 +9,8 @@ import { CharacterConsumables } from './models/character-consumables';
 })
 export class ConsumablesService {
 
-  private REST_API_SERVER = "http://localhost:8080/";
+  //private REST_API_SERVER = "http://localhost:8080/";
+  private REST_API_SERVER = "https://infinite-everglades-51264.herokuapp.com";
   private countEndpoint = "count"
   private charConsumablesEndpoint = "c"
   constructor(private httpClient: HttpClient) { }
