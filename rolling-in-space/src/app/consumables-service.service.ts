@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode} from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -9,11 +9,15 @@ import { CharacterConsumables } from './models/character-consumables';
 })
 export class ConsumablesService {
 
-  //private REST_API_SERVER = "http://localhost:8080/";
   private REST_API_SERVER = "https://infinite-everglades-51264.herokuapp.com";
   private countEndpoint = "/count"
   private charConsumablesEndpoint = "/c"
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    if (isDevMode()) {
+      this.REST_API_SERVER = "http://localhost:8080/";
+      console.log(this.REST_API_SERVER);
+    }
+  }
 
   // public getCharConsumableById(id: number){
   //   return this.httpClient.get(this.REST_API_SERVER);
