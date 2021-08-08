@@ -1,4 +1,8 @@
-<div *ngFor="let character of charCons" class="card-container">
+
+<div *ngFor="let greeting of greetings">
+      {{greeting}}
+</div>
+<div *ngFor="let character of charCons; index as i" class="card-container">
     <div class="card">
         <span>
             <h2>{{character.name}}</h2>
@@ -23,7 +27,10 @@
                         <br />
                         <div> Times Rested:
                             <!-- <mat-form-field class="consumable" appearance="outline"> -->
-                            <input class="consumable" matInput placeholder="{{character.timesRested}}">
+                            <input matInput class="consumable" type="number" 
+                            [formControl]="timesRested" 
+                             placeholder="{{character.timesRested}}"
+                            (change)="inputChanged(i)">
                             <!-- </mat-form-field> -->
                         </div>
                     </md-content>
