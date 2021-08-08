@@ -49,6 +49,28 @@ export class ConsumablesComponent implements OnInit {
    //  this.webSocketService.disconnect();
   }
 
+  validate(event : any) {
+    var theEvent = event || window.event;
+    // Handle paste
+    if (theEvent.type === 'paste') {
+        key = theEvent.clipboardData.getData('text/plain');
+    } else {
+    // Handle key press
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex = /[0-9]|\./;
+    if( !regex.test(key) ) {
+      theEvent.returnValue = false;
+      if(theEvent.preventDefault) theEvent.preventDefault();
+    }
+  }
+
+  rest() {
+    this.currentChar.timesRested = (this.currentChar.timesRested+1)%5;
+    console.log(this.currentChar.timesRested);
+  }
+
   inputChanged(index: number) : void {
     //this.sendMessage(new MessageDto(1,2));
 

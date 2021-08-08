@@ -4,33 +4,35 @@
     <label class="top_header">cur</label>
     <label>Might</label>
     <input class="stat" type="number" value="{{currentChar.might.maxValue}}" 
-        onkeypress="validate(event)">
+        (keypress)="validate($event)">
     <input class="stat" type="number" value="{{currentChar.might.currentValue}}"
-        onkeypress="validate(event)">
+        (keypress)="validate($event)">
     <label>Speed</label>
     <input class="stat" type="number" value="{{currentChar.speed.maxValue}}"
-         onkeypress="validate(event)">
+         (keypress)="validate($event)">
     <input class="stat" type="number" value="{{currentChar.speed.currentValue}}"
-         onkeypress="validate(event)">
+         (keypress)="validate($event)">
     <label>Intellect</label>
     <input class="stat" type="number" value="{{currentChar.intellect.maxValue}}"
-         onkeypress="validate(event)">
+         (keypress)="validate($event)">
     <input class="stat" type="number" value="{{currentChar.intellect.currentValue}}"
-         onkeypress="validate(event)">
+         (keypress)="validate($event)">
     <div class="stat_invisible">-</div>
     <div></div>
     <div></div>
     <label>Stress</label>
     <input class="stat" type="number" value="{{currentChar.stress.maxValue}}"
-         onkeypress="validate(event)">
+         (keypress)="validate($event)">
     <input class="stat" type="number" value="{{currentChar.stress.currentValue}}"
-         onkeypress="validate(event)">
+         (keypress)="validate($event)">
     <label>Mental</label>
     <input class="stat" type="number" value="{{currentChar.mental.maxValue}}"
-         onkeypress="validate(event)">
+         (keypress)="validate($event)">
     <input class="stat" type="number" value="{{currentChar.mental.currentValue}}"
-         onkeypress="validate(event)">
-    <button class="rest wide" type="button">Rest ({{currentChar.timesRested}})</button>
+         (keypress)="validate($event)">
+    <button class="rest wide" type="button" (click)="rest()">
+        Rest ({{currentChar.timesRested}})
+    </button>
 </form>
 
 
