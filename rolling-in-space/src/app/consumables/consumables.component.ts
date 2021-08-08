@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { CharacterConsumables } from '../models/character-consumables';
 import { ConsumablesService } from '../services/consumables-service.service';
@@ -12,9 +12,8 @@ import { MessageDto, WebsocketService } from "../services/websocket.service";
   providers: [WebsocketService]
 })
 export class ConsumablesComponent implements OnInit {
-  charCons : CharacterConsumables[] = [];
+  @Input() currentChar : CharacterConsumables;
   timesRested = new FormControl(1);
-  public greetings: string[] = [];
 
   constructor(private consumableService : ConsumablesService, 
     public webSocketService: WebsocketService) {
@@ -27,26 +26,19 @@ export class ConsumablesComponent implements OnInit {
   };
   
   ngOnInit(): void {
-
-   
-    this.consumableService.getCharacterConsumables()
-      .subscribe((data : any)=>  {
-        console.log(data);
-        this.charCons = data;
-    });
   
     this.webSocketService.connect();//openWebSocket();
-      this.webSocketService.getStompClient().connect({},  (frame : string) => {
-        // _this.setConnected(true);
-        console.log('Connected: ' + frame);
-        this.webSocketService.getStompClient().subscribe('/topic/hi', function (hello: { body: string; }) {
-          console.log(hello.body);  // this.showGreeting(JSON.parse(hello.body).greeting);
-        });
-        // this.webSocketService.getStompClient().subscribe('/topic/c/get', (data : any)=>  {
-        //   console.log(data);
-        //   this.charCons = data;
-        // });
-      });
+      // this.webSocketService.getStompClient().connect({},  (frame : string) => {
+      //   // _this.setConnected(true);
+      //   console.log('Connected: ' + frame);
+      //   this.webSocketService.getStompClient().subscribe('/topic/hi', function (hello: { body: string; }) {
+      //     console.log(hello.body);  // this.showGreeting(JSON.parse(hello.body).greeting);
+      //   });
+      //   // this.webSocketService.getStompClient().subscribe('/topic/c/get', (data : any)=>  {
+      //   //   console.log(data);
+      //   //   this.charCons = data;
+      //   // });
+      // });
     
     // this.updateService.messages.subscribe(msg => {
     //   console.log("Response from websocket: " + msg);
@@ -60,14 +52,14 @@ export class ConsumablesComponent implements OnInit {
   inputChanged(index: number) : void {
     this.sendMessage(new MessageDto(1,2));
 
-    console.log("input changed for: "+this.charCons[index].name);
+    console.log("input changed for: "+this.currentChar.name);
    // console.log("new message from client to websocket: ", this.message);
    this.msgDto.id = index;
    this.msgDto.rested = this.timesRested.value;// this.charCons[index].timesRested.toString();
   // this.webSocketService.sendMessage(this.msgDto);
    // this.updateService.messages.next(this.message);
     console.log("times rested changed to: "+this.msgDto.rested);
-    this.charCons[index].timesRested = this.timesRested.value;
+    this.currentChar.timesRested = this.timesRested.value;
     //this.charCons[index]
     //this.charCons.find( c: (c.name == charConsum.name)
   }

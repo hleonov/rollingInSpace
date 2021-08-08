@@ -1,7 +1,40 @@
+<form class="player_stats">
+    <label class="top_header"></label>
+    <label class="top_header">max</label>
+    <label class="top_header">cur</label>
+    <label>Might</label>
+    <input class="stat" type="number" value="{{currentChar.might.maxValue}}" 
+        onkeypress="validate(event)">
+    <input class="stat" type="number" value="{{currentChar.might.currentValue}}"
+        onkeypress="validate(event)">
+    <label>Speed</label>
+    <input class="stat" type="number" value="{{currentChar.speed.maxValue}}"
+         onkeypress="validate(event)">
+    <input class="stat" type="number" value="{{currentChar.speed.currentValue}}"
+         onkeypress="validate(event)">
+    <label>Intellect</label>
+    <input class="stat" type="number" value="{{currentChar.intellect.maxValue}}"
+         onkeypress="validate(event)">
+    <input class="stat" type="number" value="{{currentChar.intellect.currentValue}}"
+         onkeypress="validate(event)">
+    <div class="stat_invisible">-</div>
+    <div></div>
+    <div></div>
+    <label>Stress</label>
+    <input class="stat" type="number" value="{{currentChar.stress.maxValue}}"
+         onkeypress="validate(event)">
+    <input class="stat" type="number" value="{{currentChar.stress.currentValue}}"
+         onkeypress="validate(event)">
+    <label>Mental</label>
+    <input class="stat" type="number" value="{{currentChar.mental.maxValue}}"
+         onkeypress="validate(event)">
+    <input class="stat" type="number" value="{{currentChar.mental.currentValue}}"
+         onkeypress="validate(event)">
+    <button class="rest wide" type="button">Rest ({{currentChar.timesRested}})</button>
+</form>
 
-<div *ngFor="let greeting of greetings">
-      {{greeting}}
-</div>
+
+<!-- 
 <div *ngFor="let character of charCons; index as i" class="card-container">
     <div class="card">
         <span>
@@ -25,19 +58,18 @@
                         <br />
                         <div>Mental: {{character.mental.maxValue}}, {{character.mental.currentValue}}</div>
                         <br />
-                        <div> Times Rested:
+                        <div> Times Rested: -->
                             <!-- <mat-form-field class="consumable" appearance="outline"> -->
-                            <input matInput class="consumable" type="number" 
+                            <!-- <input matInput class="consumable" type="number" 
                             [formControl]="timesRested" 
                              placeholder="{{character.timesRested}}"
-                            (change)="inputChanged(i)">
+                            (change)="inputChanged(i)"> -->
                             <!-- </mat-form-field> -->
-                        </div>
+                        <!-- </div>
                     </md-content>
 
                 </mat-grid-tile>
             </mat-grid-list>
-            <!-- <app-roll-info></app-roll-info> -->
         </span>
     </div>
-</div>
+</div> -->

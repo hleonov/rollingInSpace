@@ -1,0 +1,18 @@
+<div id="players_container">
+  <ol id="players_list">
+    <li *ngFor="let character of charStatsList; index as i"
+       class="player_card" id="{{ 'player_card_' + i }}">{{character.name}}
+       <app-consumables  [currentChar]="character"></app-consumables>
+      
+    </li>
+  </ol>
+</div>
+<!-- <div *ngFor="let char of characters" class="card-container">
+  <div class="card">
+    <span>
+   
+      <app-consumables></app-consumables>
+      <app-roll-info></app-roll-info>
+    </span>
+  </div>
+</div> -->

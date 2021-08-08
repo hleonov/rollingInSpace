@@ -1,7 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { 
+  font-family: Consolas;
+}
+li {
+  display:inline-block;
+}
+
+input[type=number] {
+  border: none;
+  text-align: center;
+  float: right;
+  clear: both;
+  width: 40px;
+  background: #66aeff;
+  -moz-appearance: textfield;
+}
+
+.top_header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+
+.bottom_header {
+  border-top: 1px solid rgba(0, 0, 0, 0.8);
+  text-align: center;
+}
+
+.wide {
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
+select.wide,
+input.wide {
+  justify-self: center;
+  text-align: center !important;
+}
+/* 
 .card-container {
     display: flex;
     flex-wrap: wrap;
@@ -14,9 +51,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     border-radius: 16px;
     border: 1px solid #eee;
     background-color: #fafafa; 
-    /* height: 50px; */
     width: 300px;
-    /* margin: 1 8px 16px; */
     padding: 8px; 
     display: flex;
     flex-direction: row;
@@ -61,4 +96,4 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   
   .card.card.highlight-card span {
     margin-left: 60px;
-  }
+  } */
