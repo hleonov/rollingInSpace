@@ -15,8 +15,8 @@ export class ConsumablesComponent implements OnInit {
   @Input() currentChar : CharacterConsumables;
   timesRested = new FormControl(1);
 
-  constructor(private consumableService : ConsumablesService, 
-    public webSocketService: WebsocketService) {
+  constructor(private consumableService : ConsumablesService) {
+    //,public webSocketService: WebsocketService) {
     //private updateService : UpdateService) { 
   }
 
@@ -27,7 +27,7 @@ export class ConsumablesComponent implements OnInit {
   
   ngOnInit(): void {
   
-    this.webSocketService.connect();//openWebSocket();
+    //this.webSocketService.connect();//openWebSocket();
       // this.webSocketService.getStompClient().connect({},  (frame : string) => {
       //   // _this.setConnected(true);
       //   console.log('Connected: ' + frame);
@@ -46,11 +46,11 @@ export class ConsumablesComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-     this.webSocketService.disconnect();
+   //  this.webSocketService.disconnect();
   }
 
   inputChanged(index: number) : void {
-    this.sendMessage(new MessageDto(1,2));
+    //this.sendMessage(new MessageDto(1,2));
 
     console.log("input changed for: "+this.currentChar.name);
    // console.log("new message from client to websocket: ", this.message);
@@ -70,11 +70,11 @@ export class ConsumablesComponent implements OnInit {
   //   sendForm.controls.message.reset();
   // }
   
-   sendMessage(dto: MessageDto){
-    this.webSocketService.getStompClient().send('/topic/hello',
-    {}, "frontend test,, rested: "+dto.rested);
+  //  sendMessage(dto: MessageDto){
+  //   this.webSocketService.getStompClient().send('/topic/hello',
+  //   {}, "frontend test,, rested: "+dto.rested);
     //JSON.stringify(dto));  
-  }
+ // }
   
 
 }
