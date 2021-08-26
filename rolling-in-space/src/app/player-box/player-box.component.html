@@ -3,9 +3,13 @@
     <li *ngFor="let character of charStatsList; index as i"
        class="player_card" id="{{ 'player_card_' + i }}">{{character.name}}
        <app-consumables  [currentChar]="character"></app-consumables>
-      
+       <div class="screw top left"></div>
+       <div class="screw top right"></div>
+       <div class="screw bottom left"></div>
+       <div class="screw bottom right"></div>
     </li>
   </ol>
+  
 </div>
 <!-- <div *ngFor="let char of characters" class="card-container">
   <div class="card">

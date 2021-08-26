@@ -3,19 +3,26 @@
 html, body { height: 100%; }
 body { 
   font-family: Consolas;
+  background-image: url("assets/layout/stars.jpg");
+  text-shadow: -1px -1px rgba(0,0,0,0.5), 1px 1px rgba(255,255,255,0.5);
+  color: rgba(0,0,0,0.5);
 }
 li {
   display:inline-block;
 }
 
-input[type=number] {
+input[type=number] { /*::-webkit-inner-spin-button {*/
   border: none;
   text-align: center;
   float: right;
   clear: both;
   width: 40px;
-  background: #66aeff;
-  -moz-appearance: textfield;
+  background: rgba(0,0,0,0);
+  color: #ffffff;
+  font-weight: bold;
+  /* -moz-appearance: textfield;
+  appearance: textfield;
+  margin: 0;  */
 }
 
 .top_header {
@@ -37,6 +44,30 @@ select.wide,
 input.wide {
   justify-self: center;
   text-align: center !important;
+}
+
+.screw {
+  background-image: url("assets/layout/screw.png");
+  background-size: 20px 20px;
+  width: 20px;
+  height: 20px;
+  position: relative;
+}
+.screw.top.left {
+  top: -260px;
+  left: -16px;
+}
+.screw.top.right {
+  top: -280px;
+  left: 196px;
+}
+.screw.bottom.left {
+  top: 219px;
+  left: -16px;
+}
+.screw.bottom.right {
+  top: 199px;
+  left: 196px;
 }
 /* 
 .card-container {
@@ -97,3 +128,4 @@ input.wide {
   .card.card.highlight-card span {
     margin-left: 60px;
   } */
+  
