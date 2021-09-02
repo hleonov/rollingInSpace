@@ -3,18 +3,28 @@ import { Observable, Subject } from "rxjs";
 
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
+import { Consumable } from "../models/character-consumables";
 
 export class MessageDto {
   name: string;
-  mightMax: number;
-  mightCur : number;
+  might : Consumable;
   constructor(name: string, mightMax: number, mightCur : number){
       this.name = name;
-      this.mightMax = mightMax;
-      this.mightCur = mightCur;
+      this.might = new Consumable(mightMax, mightCur);
   }
 }
 
+export class StatsDto {
+  name: string;
+  might : Consumable;
+  speed : Consumable;
+  intellect : Consumable;
+  stress : Consumable;
+  mental : Consumable;
+  timesRested : number;
+
+  constructor() {}
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -23,8 +33,7 @@ export class WebsocketService {
 
   stompClient: any;
   message : string;
-  eventEmitter: EventEmitter<MessageDto> = new EventEmitter<MessageDto>();
-  private _events: Subject<MessageDto> = new Subject();
+  private _events: Subject<StatsDto> = new Subject();
 
   constructor() { }
 
@@ -41,13 +50,13 @@ export class WebsocketService {
       });
     }
   }
-  public get events(): Observable<MessageDto> {
+  public get events(): Observable<StatsDto> {
     return this._events.asObservable();
   }
 
   handleStatsEvent(wsEvent:any) {
       console.log("consmued from websocket: "+wsEvent+"\n"+wsEvent.body);
-      this._events.next(new MessageDto('Tobi', 1, 1));
+      this._events.next(JSON.parse(wsEvent.body));
   }
 
   disconnect() {
@@ -64,19 +73,11 @@ export class WebsocketService {
     return this.stompClient;
   }
 
-  // this sends a message back to the backend, once the button is clicked.
-   //entire consumablesDTO sent through the websocket?
-   sendMessage(dto: MessageDto){
+  // this sends a message back to the backend, once the button is clicked
+  //send entire consumable dto?
+  sendMessage(dto: StatsDto) {
     this.stompClient.send('/topic/hello',
-    {}, "in sendMessage, for <"+dto.name+">, might: "+dto.mightMax + "\t"+dto.mightCur);
-   }
-
-  sendName() {
-    this.stompClient.send(
-      '/topic/hello',
-      {},
-      JSON.stringify({ 'name': 'Hadas' })
-    );
+      {}, JSON.stringify(dto));
   }
 
 }

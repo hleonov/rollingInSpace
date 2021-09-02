@@ -4,33 +4,33 @@
     <label class="top_header">cur</label>
     <label>Might</label>
     <input class="stat" type="number" value="{{currentChar.might.maxValue}}" 
-            (keypress)="handleInput($event)" formControlName="mightMax"> <!--formControlName="mightMax"-->
+            (keypress)="handleInput($event)" formControlName="mightMax">
     <input class="stat" type="number" value="{{currentChar.might.currentValue}}"
-            (keypress)="handleInput($event)" formControlName="mightCur"> <!--formControlName="mightCur"-->
+            (keypress)="handleInput($event)" formControlName="mightCur">
     <label>Speed</label>
     <input class="stat" type="number" value="{{currentChar.speed.maxValue}}"
-         (keypress)="handleInput($event)">
+         (keypress)="handleInput($event)" formControlName="speedMax">
     <input class="stat" type="number" value="{{currentChar.speed.currentValue}}"
-         (keypress)="handleInput($event)">
+         (keypress)="handleInput($event)" formControlName="speedCur">
     <label>Intellect</label>
     <input class="stat" type="number" value="{{currentChar.intellect.maxValue}}"
-         (keypress)="handleInput($event)">
+         (keypress)="handleInput($event)" formControlName="intellectMax">
     <input class="stat" type="number" value="{{currentChar.intellect.currentValue}}"
-         (keypress)="handleInput($event)">
+         (keypress)="handleInput($event)" formControlName="intellectCur">
     <div class="stat_invisible">-</div>
     <div></div>
     <div></div>
     <label>Stress</label>
     <input class="stat" type="number" value="{{currentChar.stress.maxValue}}"
-         (keypress)="handleInput($event)">
+         (keypress)="handleInput($event)" formControlName="stressMax">
     <input class="stat" type="number" value="{{currentChar.stress.currentValue}}"
-         (keypress)="handleInput($event)">
+         (keypress)="handleInput($event)" formControlName="stressCur">
     <label>Mental</label>
     <input class="stat" type="number" value="{{currentChar.mental.maxValue}}"
-         (keypress)="handleInput($event)">
+         (keypress)="handleInput($event)" formControlName="mentalMax">
     <input class="stat" type="number" value="{{currentChar.mental.currentValue}}"
-         (keypress)="handleInput($event)">
-    <button class="rest wide" type="button" (click)="rest()">
-        Rest ({{currentChar.timesRested}})
-    </button>
+         (keypress)="handleInput($event)" formControlName="mentalCur">
+     <button class="rest wide" type="button" (click)="rest()">
+          Rest ({{currentChar.timesRested}})
+     </button>
 </form>

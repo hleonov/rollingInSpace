@@ -49,8 +49,13 @@ export class ConsumablesComponent implements OnInit {
   rest() {
     this.currentChar.timesRested = (this.currentChar.timesRested+1)%5;
     console.log(this.currentChar.timesRested);
+    
+    //this.parentStatsForm.get('mightMax')?.setValue(this.currentChar.might.maxValue);
+    this.parentStatsForm.get('timesRested')?.setValue(this.currentChar.timesRested);
+    // this.
+    // getElementById("#lblName").innerHTML = "Rested " +this.currentChar.timesRested;
   }
- 
+
 //this.charCons.find( c: (c.name == charConsum.name)
 
 }

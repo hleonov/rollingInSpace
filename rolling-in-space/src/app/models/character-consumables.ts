@@ -11,4 +11,9 @@ export interface CharacterConsumables {
 export class Consumable {
     maxValue : number = 0;
     currentValue : number = 0;
+
+    constructor(max : number, cur : number) {
+        this.maxValue = max;
+        this.currentValue = cur;
+    }
 }
