@@ -33,6 +33,6 @@ import { ConsumablesService } from './services/consumables-service.service';
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent, PlayerBoxComponent]
 })
 export class AppModule { }

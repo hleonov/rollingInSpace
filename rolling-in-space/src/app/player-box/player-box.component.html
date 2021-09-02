@@ -2,7 +2,7 @@
   <ol id="players_list">
     <li *ngFor="let character of charStatsList; index as i"
        class="player_card" id="{{ 'player_card_' + i }}">{{character.name}}
-       <app-consumables  [currentChar]="character"></app-consumables>
+       <app-consumables *ngIf="charStatsForm[i]" [currentChar]="character" [parentStatsForm]="charStatsForm[i]"></app-consumables> <!-- [parentStatsForm]="charStatsForm[i]"-->
        <div class="screw top left"></div>
        <div class="screw top right"></div>
        <div class="screw bottom left"></div>
