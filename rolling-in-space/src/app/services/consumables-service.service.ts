@@ -24,6 +24,10 @@ export class ConsumablesService {
     }
   }
 
+  //TODO move this away from here
+  getServerEndpoint() {
+    return this.REST_API_SERVER;
+  }
   // public getCharConsumableById(id: number){
   //   return this.httpClient.get(this.REST_API_SERVER);
   // }

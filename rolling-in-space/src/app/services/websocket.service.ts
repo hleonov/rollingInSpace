@@ -4,6 +4,7 @@ import { Observable, Subject } from "rxjs";
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { Consumable } from "../models/character-consumables";
+import { ConsumablesService } from "./consumables-service.service";
 
 export class MessageDto {
   name: string;
@@ -29,13 +30,15 @@ export class StatsDto {
   providedIn: 'root'
 })
 export class WebsocketService {
-  WS_URL : string = 'http://localhost:8080/live';
+  WS_URL : string = 'https://infinite-everglades-51264.herokuapp.com/live';
 
   stompClient: any;
   message : string;
   private _events: Subject<StatsDto> = new Subject();
 
-  constructor() { }
+  constructor() { 
+    //this.WS_URL = service.getServerEndpoint()+"/live";
+  }
 
   connect() {
     if (this.stompClient == null) {
