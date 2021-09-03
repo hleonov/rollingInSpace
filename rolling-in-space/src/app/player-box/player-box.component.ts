@@ -40,13 +40,12 @@ export class PlayerBoxComponent implements OnInit {
   }
 
   initForms() {
-    console.log("-------------> INIT STATS FORMS")
     this.charStatsList.forEach( (initialStat, i) => { 
-      console.log("init form for char "+i+"\t"+initialStat)
       this.addStatsForm(initialStat)
   });
   }
 
+  //TODO refactor and make it nicer
   addStatsForm(stat : any) {
     let numberRegEx = /^(0|[1-9]\d*)?$/;
     let form = new FormGroup({
@@ -68,11 +67,9 @@ export class PlayerBoxComponent implements OnInit {
       .subscribe((stats: any) => {
         this.webSocketService.sendMessage(
            createStatsDto(stat.name, stats)
-          //new MessageDto(stat.name, stats.mightMax, stats.mightCur)
-          )
+        )
       });
     this.charStatsForm.push(form);
-    console.log("max might from Form is: "+form.get('mightMax')?.value);
   }
 
   handleStatsChange(dto : StatsDto) {
