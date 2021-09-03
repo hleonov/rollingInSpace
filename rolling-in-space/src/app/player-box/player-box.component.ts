@@ -63,7 +63,7 @@ export class PlayerBoxComponent implements OnInit {
       timesRested: new FormControl(stat.timesRested)
     });
     form.valueChanges
-      .pipe(debounceTime(400))
+      .pipe(debounceTime(700))
       .pipe(distinctUntilChanged())
       .subscribe((stats: any) => {
         this.webSocketService.sendMessage(
