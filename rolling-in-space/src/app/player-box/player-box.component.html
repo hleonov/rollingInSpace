@@ -1,22 +1,18 @@
+<label>GM</label><input id="gm" type="checkbox" onchange="gm_mode()">
 <div id="players_container">
   <ol id="players_list">
     <li *ngFor="let character of charStatsList; index as i"
        class="player_card" id="{{ 'player_card_' + i }}">{{character.name}}
-       <app-consumables *ngIf="charStatsForm[i]" [currentChar]="character" [parentStatsForm]="charStatsForm[i]"></app-consumables> <!-- [parentStatsForm]="charStatsForm[i]"-->
+       <app-consumables *ngIf="charStatsForm[i]" [currentChar]="character" [parentStatsForm]="charStatsForm[i]"></app-consumables>
        <div class="screw top left"></div>
        <div class="screw top right"></div>
        <div class="screw bottom left"></div>
        <div class="screw bottom right"></div>
+       <app-roll-info></app-roll-info>
     </li>
   </ol>
-  
+  <div class="rotate_container">
+    <p class="rotate" id="rotate_left" onclick="rotate_left()"></p>
+    <p class="rotate" id="rotate_right" onclick="rotate_right()"></p>
 </div>
-<!-- <div *ngFor="let char of characters" class="card-container">
-  <div class="card">
-    <span>
-   
-      <app-consumables></app-consumables>
-      <app-roll-info></app-roll-info>
-    </span>
-  </div>
-</div> -->
+</div>

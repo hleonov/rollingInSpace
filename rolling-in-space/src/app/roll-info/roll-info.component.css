@@ -1,0 +1,35 @@
+.player_roll {
+    border: 3px solid rgb(68,68,68);
+    font-weight: normal;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-row-gap: 4px;
+    border-radius: 16px;
+    background: rgb(55,55,55);
+    color: #757677;
+    margin-top: -70px;
+  }
+
+  .tactic {
+    width: 150px;
+  }
+
+  
+div.roll {
+    background-image: url("../../assets/layout/arrow_double_down.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 45px;
+  }
+  
+  div.roll.down:hover {
+    background-color: #f1e3e5;
+  }
+  
+.up {
+    transform: rotate(180deg);
+}
+  
+.stat_roll_line {
+    width: 60px;
+}
