@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from "@angular/core";
+import { Injectable, EventEmitter, isDevMode } from "@angular/core";
 import { Observable, Subject } from "rxjs"; 
 
 import * as Stomp from 'stompjs';
@@ -30,14 +30,17 @@ export class StatsDto {
   providedIn: 'root'
 })
 export class WebsocketService {
-  WS_URL : string = 'https://infinite-everglades-51264.herokuapp.com/live';
+  WS_URL : string = 'https://infinite-everglades-51264.herokuapp.com';
 
   stompClient: any;
   message : string;
   private _events: Subject<StatsDto> = new Subject();
 
   constructor() { 
-    //this.WS_URL = service.getServerEndpoint()+"/live";
+    if (isDevMode()) {
+      this.WS_URL = 'http://localhost:8080';
+    }
+    this.WS_URL += "/live";
   }
 
   connect() {
