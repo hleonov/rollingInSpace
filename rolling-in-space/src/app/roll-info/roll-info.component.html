@@ -1,25 +1,23 @@
-<form class="player_roll">
-    <label class="top_header wide">dice pool</label>
-    <input class="wide dice" type="number" value="0" onkeypress="validate(event)">
+<form class="player_roll" [formGroup]="rollInfoForm">
+    <label class="top_header wide">Dice pool</label>
+    <input class="wide dice" type="number" min="0" 
+        onkeypress="validate(event)" formControlName="dicePool">
     <select class="wide tactic">
-        <option value="tactic0">tactic</option>
-        <option value="tactic1">..</option>
-        <option value="tactic2">...</option>
-        <option value="tactic3">....</option>
+        <option selected disabled hidden>Choose tactic...</option>
+        <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.key}}"> {{tactic.value}}</option>
     </select>
-    <div class="roll down wide" onclick="roll()"></div>
+    <div class="roll down wide" (click)="rollDice()"></div>
     <label class="top_header stat_roll_line"></label>
-    <label class="stat_roll_line"></label>
+    <label class="stat_roll_line">{{numOfSuccesses}}</label>
     <label class="top_header stat_roll_line"></label>
     <div class="roll up wide"></div>
     <select class="wide tactic opposing">
-        <option value="tactic0">tactic</option>
-        <option value="tactic1">..</option>
-        <option value="tactic2">...</option>
-        <option value="tactic3">....</option>
+        <option selected disabled hidden>Choose tactic...</option>
+        <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.key}}"> {{tactic.value}}</option>
     </select>
-    <input class="wide tn opposing" type="number" value="0" onkeypress="validate(event)">
-    <label class="bottom_header wide">TN</label>
+    <input class="wide tn opposing" type="number" 
+        onkeypress="validate(event)" formControlName="targetNumber">
+    <label class="bottom_header wide">Target Number (TN)</label>
 </form>
 
 <!-- <div> 

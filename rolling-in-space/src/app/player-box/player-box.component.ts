@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Stats } from 'fs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { CharacterConsumables, Consumable } from '../models/character-consumables';
 import { ConsumablesService } from '../services/consumables-service.service';
-import { MessageDto, StatsDto, WebsocketService } from '../services/websocket.service';
+import { StatsDto, WebsocketService } from '../services/websocket.service';
 
 @Component({
   selector: 'app-player-box',
@@ -17,7 +16,9 @@ export class PlayerBoxComponent implements OnInit {
   charStatsList : CharacterConsumables[] = [];
   charStatsForm : FormGroup[] = [];
 
-  constructor(private consumableService : ConsumablesService,
+  constructor(
+    private consumableService : ConsumablesService, 
+    private formBuilder: FormBuilder,
     public webSocketService: WebsocketService) { 
   }
 
@@ -47,20 +48,22 @@ export class PlayerBoxComponent implements OnInit {
 
   //TODO refactor and make it nicer
   addStatsForm(stat : any) {
-    let numberRegEx = /^(0|[1-9]\d*)?$/;
-    let form = new FormGroup({
-      mightMax: new FormControl(stat.might.maxValue, Validators.pattern(numberRegEx)),
-      mightCur: new FormControl(stat.might.currentValue, Validators.pattern(numberRegEx)),
-      speedMax: new FormControl(stat.speed.maxValue, Validators.pattern(numberRegEx)),
-      speedCur: new FormControl(stat.speed.currentValue, Validators.pattern(numberRegEx)),
-      intellectMax: new FormControl(stat.intellect.maxValue, Validators.pattern(numberRegEx)),
-      intellectCur: new FormControl(stat.intellect.currentValue, Validators.pattern(numberRegEx)),
-      stressMax: new FormControl(stat.stress.maxValue, Validators.pattern(numberRegEx)),
-      stressCur: new FormControl(stat.stress.currentValue, Validators.pattern(numberRegEx)),
-      mentalMax: new FormControl(stat.mental.maxValue, Validators.pattern(numberRegEx)),
-      mentalCur: new FormControl(stat.mental.currentValue, Validators.pattern(numberRegEx)),
-      timesRested: new FormControl(stat.timesRested)
+    let numberRegEx =     /^[0-9]\d*$/g ;// /^\d+$/;
+    let validators = [Validators.required, Validators.pattern(numberRegEx)];
+    let form = this.formBuilder.group({
+      mightMax: [stat.might.maxValue, validators],
+      mightCur: [stat.might.currentValue, validators],
+      speedMax: [stat.speed.maxValue, validators],
+      speedCur: [stat.speed.currentValue, validators],
+      intellectMax: [stat.intellect.maxValue, validators],
+      intellectCur: [stat.intellect.currentValue, validators],
+      stressMax: [stat.stress.maxValue, validators],
+      stressCur: [stat.stress.currentValue, validators],
+      mentalMax: [stat.mental.maxValue,  validators],
+      mentalCur: [stat.mental.currentValue,  validators],
+      timesRested: [stat.timesRested]
     });
+
     form.valueChanges
       .pipe(debounceTime(700))
       .pipe(distinctUntilChanged())
@@ -76,7 +79,7 @@ export class PlayerBoxComponent implements OnInit {
     console.log("consumed stats change in playerbox: "+dto);
     let i = this.charStatsList.findIndex( c =>(c.name == dto.name));
     this.charStatsList[i].timesRested = dto.timesRested;
-    this.charStatsForm[i].setValue({
+    this.charStatsForm[i].setValue({  
       mightMax: dto.might.maxValue, 
       mightCur: dto.might.currentValue,
       speedMax: dto.speed.maxValue,

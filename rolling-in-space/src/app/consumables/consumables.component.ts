@@ -24,36 +24,27 @@ export class ConsumablesComponent implements OnInit {
   ngAfterViewInit (): void {
   }
 
-  //TODO: maybe better to use validators of FormGroup
-  handleInput(event : any) {
-    this.validate(event);
-  }
-
-  validate(event : any) {
-    var theEvent = event || window.event;
-    // Handle paste
-    if (theEvent.type === 'paste') {
-        key = theEvent.clipboardData.getData('text/plain');
-    } else {
-    // Handle key press
-        var key = theEvent.keyCode || theEvent.which;
-        key = String.fromCharCode(key);
-    }
-    var regex = /[0-9]|\./;
-    if( !regex.test(key) ) {
-      theEvent.returnValue = false;
-      if(theEvent.preventDefault) theEvent.preventDefault();
-    }
-  }
+  // validate(event : any) {
+  //   var theEvent = event || window.event;
+  //   // Handle paste
+  //   if (theEvent.type === 'paste') {
+  //       key = theEvent.clipboardData.getData('text/plain');
+  //   } else {
+  //   // Handle key press
+  //       var key = theEvent.keyCode || theEvent.which;
+  //       key = String.fromCharCode(key);
+  //   }
+  //   var regex = /[0-9]|\./;
+  //   if( !regex.test(key) ) {
+  //     theEvent.returnValue = false;
+  //     if(theEvent.preventDefault) theEvent.preventDefault();
+  //   }
+  // }
 
   rest() {
     this.currentChar.timesRested = (this.currentChar.timesRested+1)%5;
     console.log(this.currentChar.timesRested);
-    
-    //this.parentStatsForm.get('mightMax')?.setValue(this.currentChar.might.maxValue);
     this.parentStatsForm.get('timesRested')?.setValue(this.currentChar.timesRested);
-    // this.
-    // getElementById("#lblName").innerHTML = "Rested " +this.currentChar.timesRested;
   }
 
 //this.charCons.find( c: (c.name == charConsum.name)
