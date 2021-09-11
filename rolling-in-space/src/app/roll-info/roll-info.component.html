@@ -6,7 +6,7 @@
         <option selected disabled hidden>Choose tactic...</option>
         <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.value}}"> {{tactic.value}}</option>
     </select>
-    <div class="roll down wide" (click)="rollDice()"></div>
+    <button class="roll down wide" (click)="rollDice()"></button>
     <label class="top_header stat_roll_line"></label>
     <label class="stat_roll_line">{{numOfSuccesses}}</label>
     <label class="top_header stat_roll_line"></label>
