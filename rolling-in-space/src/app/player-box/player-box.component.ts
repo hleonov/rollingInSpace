@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { CharacterConsumables, Consumable } from '../models/character-consumables';
@@ -15,11 +15,13 @@ export class PlayerBoxComponent implements OnInit {
   
   charStatsList : CharacterConsumables[] = [];
   charStatsForm : FormGroup[] = [];
+  enableGM : FormControl;
 
   constructor(
     private consumableService : ConsumablesService, 
     private formBuilder: FormBuilder,
     public webSocketService: WebsocketService) { 
+      this.enableGM = new FormControl(false);
   }
 
   ngOnInit(): void {

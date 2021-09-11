@@ -19,7 +19,6 @@ export enum Tactic {
     providedIn: 'root'
 })
 export class TacticTable {
-    //public tacticTable: { [x: string]: { [y: string]: number; }; } = {};
     public tacticTable : any = {};
     constructor() {
 

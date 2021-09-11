@@ -11,7 +11,7 @@
     <label class="stat_roll_line">{{numOfSuccesses}}</label>
     <label class="top_header stat_roll_line"></label>
     <div class="roll up wide"></div>
-    <select class="wide tactic opposing" formControlName="gameMasterTactic">
+    <select matNativeControl  [disabled]="!parentEnabledGM.value" class="wide tactic opposing"> <!--formControlName="gameMasterTactic"-->
         <option selected disabled hidden>Choose tactic...</option>
         <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.value}}"> {{tactic.value}}</option>
     </select>

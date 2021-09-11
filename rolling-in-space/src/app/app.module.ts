@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import {MatInputModule} from '@angular/material/input'; 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -29,7 +30,8 @@ import { ConsumablesService } from './services/consumables-service.service';
     MatGridListModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatCheckboxModule
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   providers: [],

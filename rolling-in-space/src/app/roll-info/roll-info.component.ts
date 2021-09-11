@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { Tactic, TacticTable } from '../models/roll-info';
 
 @Component({
@@ -9,12 +9,16 @@ import { Tactic, TacticTable } from '../models/roll-info';
 })
 export class RollInfoComponent implements OnInit {
 
+  @Input() parentEnabledGM : FormControl;
+
   public Tactic = Tactic;
-  public DEFAULT_OPPOSING_TN = 4;
-  public TACTIC_INITIAL_VALUE = "Choose tactic...";
-  AUTOMATIC_SUCCESS = 6;
+  public readonly DEFAULT_OPPOSING_TN = 4;
+  public readonly  TACTIC_INITIAL_VALUE = "Choose tactic...";
+  readonly AUTOMATIC_SUCCESS = 6;
+
   numOfSuccesses : number;
   rollInfoForm : FormGroup;
+
   constructor(private formBuilder: FormBuilder, private  tacticTable: TacticTable) { 
     this.numOfSuccesses = 0;
     this.initRollingForm();

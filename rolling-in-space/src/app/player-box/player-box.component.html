@@ -1,4 +1,3 @@
-<label>GM</label><input id="gm" type="checkbox" onchange="gm_mode()">
 <div id="players_container">
   <ol id="players_list">
     <li *ngFor="let character of charStatsList; index as i"
@@ -8,11 +7,15 @@
        <div class="screw top right"></div>
        <div class="screw bottom left"></div>
        <div class="screw bottom right"></div>
-       <app-roll-info></app-roll-info>
+       <app-roll-info [parentEnabledGM]="enableGM"></app-roll-info>
     </li>
   </ol>
   <div class="rotate_container">
     <p class="rotate" id="rotate_left" onclick="rotate_left()"></p>
     <p class="rotate" id="rotate_right" onclick="rotate_right()"></p>
+  </div>
+  <div class="gm_checkbox">
+    <mat-checkbox [formControl]="enableGM">I am the GM</mat-checkbox>
+  </div>
 </div>
-</div>
+

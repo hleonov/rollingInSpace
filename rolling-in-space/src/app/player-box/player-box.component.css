@@ -30,4 +30,12 @@
 .name {
     font-size: 20px;
 }
+
+.gm_checkbox {
+    color:azure;
+    position: relative;
+}
+::ng-deep .mat-checkbox-frame {
+    border-color: white
+}
   
