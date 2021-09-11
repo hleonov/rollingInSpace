@@ -38,6 +38,7 @@ export class RollInfoComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  //step 2
   adjustDiceAndTN(numDice : number, TN : number) : [number, number] {
     let adjustedDiceNum = numDice;
     let adjustedTN = TN; 
@@ -75,11 +76,12 @@ export class RollInfoComponent implements OnInit {
     return [adjustedDiceNum, adjustedTN];
   }
 
+  //step 1
   adjustTNaccordingToTactic(TN : number) : number {
     let playerT = this.rollInfoForm.get("playerTactic")?.value;
     let gmT = this.rollInfoForm.get("gameMasterTactic")?.value;
     
-    console.log("player tactic: "+playerT+" gm tactic: "+gmT);
+    console.log("player tactic: "+playerT+"\tgm tactic: "+gmT);
     return TN + this.tacticTable.getModification(playerT, gmT);
   }
 
@@ -87,12 +89,15 @@ export class RollInfoComponent implements OnInit {
     let successCounter = 0;
     let numDice  : number = this.rollInfoForm.get("dicePool")?.value;
     let TN : number = this.rollInfoForm.get("targetNumber")?.value;
+    //step 1: 
     let modifiedTN : number = this.adjustTNaccordingToTactic(TN);
     console.log("after tactic modification: "+modifiedTN)
+    //step 2:
     let [adjustedDiceNum, adjustedTN] = this.adjustDiceAndTN(numDice, modifiedTN);
     console.log("number of dice to roll: "+numDice+" adjusted: "+adjustedDiceNum);
     console.log("target number: "+TN+" adjusted: "+adjustedTN);
 
+    //step 3:
     for (let i = 0; i < adjustedDiceNum; i++) {
       successCounter = this.performRollRoutine(adjustedTN, successCounter);
      
@@ -100,6 +105,7 @@ export class RollInfoComponent implements OnInit {
     this.numOfSuccesses = successCounter;
   }
 
+  //step 3
   performRollRoutine(TN : number, successCounter : number) : number{
     let roll = this.rollDie();
     
