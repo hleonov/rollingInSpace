@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Tactic } from '../models/roll-info';
+import { Tactic, TacticTable } from '../models/roll-info';
 
 @Component({
   selector: 'app-roll-info',
@@ -11,12 +11,11 @@ export class RollInfoComponent implements OnInit {
 
   public Tactic = Tactic;
   public DEFAULT_OPPOSING_TN = 4;
-
+  public TACTIC_INITIAL_VALUE = "Choose tactic...";
   AUTOMATIC_SUCCESS = 6;
   numOfSuccesses : number;
   rollInfoForm : FormGroup;
-  
-  constructor(private formBuilder: FormBuilder) { 
+  constructor(private formBuilder: FormBuilder, private  tacticTable: TacticTable) { 
     this.numOfSuccesses = 0;
     this.initRollingForm();
   }
@@ -26,7 +25,9 @@ export class RollInfoComponent implements OnInit {
     let validators = [Validators.required, Validators.pattern(numberRegEx)];
     this.rollInfoForm = this.formBuilder.group({
       dicePool: [0, validators],
-      targetNumber: [this.DEFAULT_OPPOSING_TN, validators]
+      targetNumber: [this.DEFAULT_OPPOSING_TN, validators],
+      playerTactic : [this.TACTIC_INITIAL_VALUE],
+      gameMasterTactic : [this.TACTIC_INITIAL_VALUE]
     });
   }
 
@@ -70,11 +71,21 @@ export class RollInfoComponent implements OnInit {
     return [adjustedDiceNum, adjustedTN];
   }
 
+  adjustTNaccordingToTactic(TN : number) : number {
+    let playerT = this.rollInfoForm.get("playerTactic")?.value;
+    let gmT = this.rollInfoForm.get("gameMasterTactic")?.value;
+    
+    console.log("player tactic: "+playerT+" gm tactic: "+gmT);
+    return TN + this.tacticTable.getModification(playerT, gmT);
+  }
+
   rollDice() {
     let successCounter = 0;
     let numDice  : number = this.rollInfoForm.get("dicePool")?.value;
     let TN : number = this.rollInfoForm.get("targetNumber")?.value;
-    let [adjustedDiceNum, adjustedTN] = this.adjustDiceAndTN(numDice, TN);
+    let modifiedTN : number = this.adjustTNaccordingToTactic(TN);
+    console.log("after tactic modification: "+modifiedTN)
+    let [adjustedDiceNum, adjustedTN] = this.adjustDiceAndTN(numDice, modifiedTN);
     console.log("number of dice to roll: "+numDice+" adjusted: "+adjustedDiceNum);
     console.log("target number: "+TN+" adjusted: "+adjustedTN);
 
@@ -107,3 +118,5 @@ export class RollInfoComponent implements OnInit {
 
 
 }
+
+

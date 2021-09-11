@@ -2,18 +2,18 @@
     <label class="top_header wide">Dice pool</label>
     <input class="wide dice" type="number" min="0" 
         onkeypress="validate(event)" formControlName="dicePool">
-    <select class="wide tactic">
+    <select class="wide tactic" formControlName="playerTactic">
         <option selected disabled hidden>Choose tactic...</option>
-        <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.key}}"> {{tactic.value}}</option>
+        <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.value}}"> {{tactic.value}}</option>
     </select>
     <div class="roll down wide" (click)="rollDice()"></div>
     <label class="top_header stat_roll_line"></label>
     <label class="stat_roll_line">{{numOfSuccesses}}</label>
     <label class="top_header stat_roll_line"></label>
     <div class="roll up wide"></div>
-    <select class="wide tactic opposing">
+    <select class="wide tactic opposing" formControlName="gameMasterTactic">
         <option selected disabled hidden>Choose tactic...</option>
-        <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.key}}"> {{tactic.value}}</option>
+        <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.value}}"> {{tactic.value}}</option>
     </select>
     <input class="wide tn opposing" type="number" 
         onkeypress="validate(event)" formControlName="targetNumber">
