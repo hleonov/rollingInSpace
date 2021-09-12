@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms'
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { TacticTable } from "../models/TacticTable";
 import { Tactic } from "../models/Tactic";
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { WebsocketService } from '../services/websocket.service';
+import { RollInfoDto } from '../models/RollInfoDto';
 
 @Component({
   selector: 'app-roll-info',
@@ -12,6 +15,8 @@ import { Tactic } from "../models/Tactic";
 export class RollInfoComponent implements OnInit {
 
   @Input() parentEnabledGM : FormControl;
+  //@Input() parentRollInfo : FormGroup;
+  @Input() charName : string;
 
   public Tactic = Tactic;
   public readonly DEFAULT_OPPOSING_TN = 4;
@@ -21,9 +26,18 @@ export class RollInfoComponent implements OnInit {
   numOfSuccesses : number;
   rollInfoForm : FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private  tacticTable: TacticTable) { 
+  constructor(private formBuilder: FormBuilder, private  tacticTable: TacticTable, 
+    private webSocketService: WebsocketService) { 
     this.numOfSuccesses = 0;
     this.initRollingForm();
+  }
+
+  ngOnInit(): void {
+    this.webSocketService.rollBoxChangedEvents.subscribe(dto => {
+      this.handleRollInfoChanges(dto);
+    })
+    // if (this.parentEnabledGM.value)
+    //   this.rollInfoForm.get('gameMasterTactic')?.disable()
   }
 
   private initRollingForm() {
@@ -35,11 +49,45 @@ export class RollInfoComponent implements OnInit {
       playerTactic : [this.TACTIC_INITIAL_VALUE],
       gameMasterTactic : [this.TACTIC_INITIAL_VALUE]
     });
-  }
 
-  ngOnInit(): void {
+    this.rollInfoForm.valueChanges
+      .pipe(debounceTime(700))
+      .pipe(distinctUntilChanged())
+      .subscribe((info: any) => {
+        this.webSocketService.sendRollInfoDto(
+           this.createRollInfoDto(info)
+        )
+      });
   }
+  
+createRollInfoDto(info : any): RollInfoDto {
+  var dto = new RollInfoDto();
+  dto.name = this.charName;
+  dto.dicePool = info.dicePool ?? this.rollInfoForm.get("dicePool")?.value ?? 0;
+  dto.targetNumber = info.targetNumber ?? this.rollInfoForm.get("targetNumber")?.value ?? this.DEFAULT_OPPOSING_TN
+  dto.pcTactic = info.playerTactic ?? this.rollInfoForm.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
+  dto.gmTactic = info.gameMasterTactic ?? this.rollInfoForm.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
+  dto.rollResult = this.numOfSuccesses; 
 
+  return dto;
+}
+
+handleRollInfoChanges(dto : RollInfoDto) {
+  if (dto.name !== this.charName) {
+    return;
+  }
+  console.log("consuming roll for char: "+dto.name)
+  //do not change the shown form value for GM tactics, unless it was changed from own client
+  const currentGMTactic = this.rollInfoForm.get("gameMasterTactic")?.value || this.TACTIC_INITIAL_VALUE ;
+  this.numOfSuccesses = dto.rollResult;
+  this.rollInfoForm.setValue({
+    dicePool : dto.dicePool,
+    targetNumber: dto.targetNumber,
+    playerTactic : dto.pcTactic,
+    gameMasterTactic : currentGMTactic
+  }, {emitEvent: false});
+}
+  
   //step 2
   adjustDiceAndTN(numDice : number, TN : number) : [number, number] {
     let adjustedDiceNum = numDice;
@@ -91,20 +139,22 @@ export class RollInfoComponent implements OnInit {
     let successCounter = 0;
     let numDice  : number = this.rollInfoForm.get("dicePool")?.value;
     let TN : number = this.rollInfoForm.get("targetNumber")?.value;
-    //step 1: 
+    //step 1: tactics modifies TN
     let modifiedTN : number = this.adjustTNaccordingToTactic(TN);
     console.log("after tactic modification: "+modifiedTN)
-    //step 2:
+    //step 2: adjust TN and dice when too high/low
     let [adjustedDiceNum, adjustedTN] = this.adjustDiceAndTN(numDice, modifiedTN);
     console.log("number of dice to roll: "+numDice+" adjusted: "+adjustedDiceNum);
     console.log("target number: "+TN+" adjusted: "+adjustedTN);
 
-    //step 3:
+    //step 3: roll each die from dice pool
     for (let i = 0; i < adjustedDiceNum; i++) {
       successCounter = this.performRollRoutine(adjustedTN, successCounter);
-     
     }
     this.numOfSuccesses = successCounter;
+
+    //step 4: sync others
+    this.webSocketService.sendRollInfoDto(this.createRollInfoDto({}));
   }
 
   //step 3
@@ -130,5 +180,6 @@ export class RollInfoComponent implements OnInit {
 
 
 }
+
 
 

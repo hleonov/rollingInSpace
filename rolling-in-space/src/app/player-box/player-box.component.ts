@@ -16,18 +16,20 @@ export class PlayerBoxComponent implements OnInit {
   
   charStatsList : CharacterConsumables[] = [];
   charStatsForm : FormGroup[] = [];
+  rollInfoForm : FormGroup [] = [];
   enableGM : FormControl;
 
   constructor(
-    private consumableService : ConsumablesService, 
-    private formBuilder: FormBuilder,
-    public webSocketService: WebsocketService) { 
-      this.enableGM = new FormControl(false);
+      private consumableService : ConsumablesService, 
+      private formBuilder: FormBuilder,
+      public webSocketService: WebsocketService) 
+  { 
+    this.enableGM = new FormControl(false);
   }
 
   ngOnInit(): void {
     this.webSocketService.connect();
-    this.webSocketService.events.subscribe(dto => {
+    this.webSocketService.statChangedEvents.subscribe(dto => {
       this.handleStatsChange(dto);
     })
     console.log("init player box");
