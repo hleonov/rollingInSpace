@@ -31,7 +31,7 @@ export class WebsocketService {
       const _this = this;
       this.stompClient.connect({}, function (frame : any) {
         console.log('Connected inside Websocket service: ' + frame);
-        _this.stompClient.subscribe('/topic/hi', function (wsEvent :any) { //consume stats changes from backend (WS)
+        _this.stompClient.subscribe('/topic/consume_stats', function (wsEvent :any) { //consume stats changes from backend (WS)
           _this.handleStatsEvent(wsEvent);
         });
         _this.stompClient.subscribe('/topic/consume_roll', function (wsEvent :any) { //consume roll info changes from backend (WS)
@@ -49,12 +49,12 @@ export class WebsocketService {
   }
 
   handleStatsEvent(wsEvent:any) {
-      console.log("consmued from websocket: "+wsEvent+"\n"+wsEvent.body);
+      //console.log("consmued from websocket: "+wsEvent+"\n"+wsEvent.body);
       this._statsEvents.next(JSON.parse(wsEvent.body));
   }
 
   handleRollBoxEvent(wsEvent:any) {
-    console.log("consuming info from roll box: "+wsEvent+"\n"+wsEvent.body);
+    //console.log("consuming info from roll box: "+wsEvent+"\n"+wsEvent.body);
     this._rollBoxEvents.next(JSON.parse(wsEvent.body));
   }
 
@@ -74,7 +74,7 @@ export class WebsocketService {
 
   // this sends the character stats back to the backend
   sendStatsDto(dto: StatsDto) {
-    this.stompClient.send('/topic/hello',
+    this.stompClient.send('/topic/stats',
       {}, JSON.stringify(dto));
   }
 
