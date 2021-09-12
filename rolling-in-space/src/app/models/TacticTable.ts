@@ -1,25 +1,12 @@
 import { Injectable } from "@angular/core";
+import { Tactic } from "./Tactic";
 
-export interface RollInfo {
-    targetNumber: number;
-    tactic: Tactic;
-    dice: number;
-    result: number;
-}
-
-export enum Tactic {
-    quickly = "Quickly",
-    forcefully = "Forcefully",
-    indirectly = "Indirectly", 
-    consistently = "Consistently", 
-    precisely = "Precisely"
-}
 
 @Injectable({
     providedIn: 'root'
 })
 export class TacticTable {
-    public tacticTable : any = {};
+    public tacticTable: any = {};
     constructor() {
 
         this.tacticTable[Tactic.quickly] = {};
@@ -27,10 +14,10 @@ export class TacticTable {
         this.tacticTable[Tactic.consistently] = {};
         this.tacticTable[Tactic.indirectly] = {};
         this.tacticTable[Tactic.precisely] = {};
-    //                        L (GM)         R(PC)        
+        //                        L (GM)         R(PC)        
         this.tacticTable[Tactic.quickly][Tactic.quickly] = 0;
         this.tacticTable[Tactic.quickly][Tactic.forcefully] = -1;
-        this.tacticTable[Tactic.quickly][Tactic.consistently]= 2;
+        this.tacticTable[Tactic.quickly][Tactic.consistently] = 2;
         this.tacticTable[Tactic.quickly][Tactic.indirectly] = 1;
         this.tacticTable[Tactic.quickly][Tactic.precisely] = -2;
 
@@ -60,8 +47,8 @@ export class TacticTable {
         console.log(this.tacticTable);
     }
 
-    public getModification(pc : Tactic, gm : Tactic) : number {
-        console.log("modification: "+this.tacticTable[pc][gm])
+    public getModification(pc: Tactic, gm: Tactic): number {
+        console.log("modification: " + this.tacticTable[pc][gm]);
         return this.tacticTable[pc][gm];
     }
 }

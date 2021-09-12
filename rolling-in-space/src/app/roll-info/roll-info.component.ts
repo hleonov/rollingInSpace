@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { Tactic, TacticTable } from '../models/roll-info';
+import { MatFormFieldControl } from '@angular/material/form-field';
+import { TacticTable } from "../models/TacticTable";
+import { Tactic } from "../models/Tactic";
 
 @Component({
   selector: 'app-roll-info',

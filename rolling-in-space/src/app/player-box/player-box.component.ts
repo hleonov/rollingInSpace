@@ -4,7 +4,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { CharacterConsumables, Consumable } from '../models/character-consumables';
 import { ConsumablesService } from '../services/consumables-service.service';
-import { StatsDto, WebsocketService } from '../services/websocket.service';
+import { WebsocketService } from '../services/websocket.service';
+import { StatsDto } from "../models/StatsDto";
 
 @Component({
   selector: 'app-player-box',
@@ -70,7 +71,7 @@ export class PlayerBoxComponent implements OnInit {
       .pipe(debounceTime(700))
       .pipe(distinctUntilChanged())
       .subscribe((stats: any) => {
-        this.webSocketService.sendMessage(
+        this.webSocketService.sendStatsDto(
            createStatsDto(stat.name, stats)
         )
       });

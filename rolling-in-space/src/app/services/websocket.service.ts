@@ -3,29 +3,9 @@ import { Observable, Subject } from "rxjs";
 
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import { Consumable } from "../models/character-consumables";
-import { ConsumablesService } from "./consumables-service.service";
+import { RollInfoDto } from "../models/RollInfoDto";
+import { StatsDto } from "../models/StatsDto";
 
-export class MessageDto {
-  name: string;
-  might : Consumable;
-  constructor(name: string, mightMax: number, mightCur : number){
-      this.name = name;
-      this.might = new Consumable(mightMax, mightCur);
-  }
-}
-
-export class StatsDto {
-  name: string;
-  might : Consumable;
-  speed : Consumable;
-  intellect : Consumable;
-  stress : Consumable;
-  mental : Consumable;
-  timesRested : number;
-
-  constructor() {}
-}
 @Injectable({
   providedIn: 'root'
 })
@@ -79,9 +59,8 @@ export class WebsocketService {
     return this.stompClient;
   }
 
-  // this sends a message back to the backend, once the button is clicked
-  //send entire consumable dto?
-  sendMessage(dto: StatsDto) {
+  // this sends the character stats back to the backend, once the button is clicked
+  sendStatsDto(dto: StatsDto) {
     this.stompClient.send('/topic/hello',
       {}, JSON.stringify(dto));
   }
