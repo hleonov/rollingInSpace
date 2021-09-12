@@ -21,6 +21,8 @@ export class RollInfoComponent implements OnInit {
   public readonly  TACTIC_INITIAL_VALUE = "Choose tactic...";
   readonly AUTOMATIC_SUCCESS = 6;
 
+  private theGmTactic : Tactic;
+
   numOfSuccesses : number;
   rollInfoForm : FormGroup;
 
@@ -64,7 +66,7 @@ createRollInfoDto(info : any): RollInfoDto {
   dto.pcTactic = info.playerTactic ?? this.rollInfoForm.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
   dto.gmTactic = info.gameMasterTactic ?? this.rollInfoForm.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
   dto.rollResult = this.numOfSuccesses; 
-
+  dto.exposeGMTactic = info.exposeGMTactic ?? false;
   return dto;
 }
 
@@ -73,15 +75,16 @@ handleRollInfoChanges(dto : RollInfoDto) {
     return;
   }
   console.log("consuming roll for char: "+dto.name)
-  //do not change the shown form value for GM tactics, unless it was changed from own client
+  //do not change the shown form value for GM tactics, unless it was changed from own client, but store the dto one secretly
   const currentGMTactic = this.rollInfoForm.get("gameMasterTactic")?.value || this.TACTIC_INITIAL_VALUE ;
   this.numOfSuccesses = dto.rollResult;
   this.rollInfoForm.setValue({
     dicePool : dto.dicePool,
     targetNumber: dto.targetNumber,
     playerTactic : dto.pcTactic,
-    gameMasterTactic : currentGMTactic
+    gameMasterTactic : dto.exposeGMTactic ? this.theGmTactic : currentGMTactic
   }, {emitEvent: false});
+  this.theGmTactic = dto.gmTactic;
 }
   
   //step 2
@@ -150,7 +153,7 @@ handleRollInfoChanges(dto : RollInfoDto) {
     this.numOfSuccesses = successCounter;
 
     //step 4: sync others
-    this.webSocketService.sendRollInfoDto(this.createRollInfoDto({}));
+    this.webSocketService.sendRollInfoDto(this.createRollInfoDto({exposeGMTactic: true}));
   }
 
   //step 3

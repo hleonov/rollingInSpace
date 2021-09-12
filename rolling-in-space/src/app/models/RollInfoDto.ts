@@ -7,4 +7,5 @@ export class RollInfoDto {
     pcTactic: Tactic;
     gmTactic: Tactic;
     rollResult: number;
+    exposeGMTactic : boolean;
 }
