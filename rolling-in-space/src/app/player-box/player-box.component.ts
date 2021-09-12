@@ -16,7 +16,6 @@ export class PlayerBoxComponent implements OnInit {
   
   charStatsList : CharacterConsumables[] = [];
   charStatsForm : FormGroup[] = [];
-  rollInfoForm : FormGroup [] = [];
   enableGM : FormControl;
 
   constructor(

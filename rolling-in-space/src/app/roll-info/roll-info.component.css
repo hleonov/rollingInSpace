@@ -10,10 +10,9 @@
     margin-top: -70px;
   }
 
-  .tactic {
-    width: 150px;
-  }
-
+.tactic {
+  width: 150px;
+}
   
 .roll{
     background-color: rgb(55,55,55);
@@ -37,4 +36,8 @@
     text-align: center;
     color: #0eb0f0;
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.formDisabled {
+  color: gray;
 }

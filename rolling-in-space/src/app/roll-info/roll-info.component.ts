@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { MatFormFieldControl } from '@angular/material/form-field';
 import { TacticTable } from "../models/TacticTable";
 import { Tactic } from "../models/Tactic";
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -15,7 +14,6 @@ import { RollInfoDto } from '../models/RollInfoDto';
 export class RollInfoComponent implements OnInit {
 
   @Input() parentEnabledGM : FormControl;
-  //@Input() parentRollInfo : FormGroup;
   @Input() charName : string;
 
   public Tactic = Tactic;
@@ -36,8 +34,6 @@ export class RollInfoComponent implements OnInit {
     this.webSocketService.rollBoxChangedEvents.subscribe(dto => {
       this.handleRollInfoChanges(dto);
     })
-    // if (this.parentEnabledGM.value)
-    //   this.rollInfoForm.get('gameMasterTactic')?.disable()
   }
 
   private initRollingForm() {
@@ -47,9 +43,9 @@ export class RollInfoComponent implements OnInit {
       dicePool: [0, validators],
       targetNumber: [this.DEFAULT_OPPOSING_TN, validators],
       playerTactic : [this.TACTIC_INITIAL_VALUE],
-      gameMasterTactic : [this.TACTIC_INITIAL_VALUE]
+      gameMasterTactic : [{value: this.TACTIC_INITIAL_VALUE, disabled: !this.parentEnabledGM}]
     });
-
+    
     this.rollInfoForm.valueChanges
       .pipe(debounceTime(700))
       .pipe(distinctUntilChanged())
