@@ -39,5 +39,6 @@
 }
 
 .formDisabled {
-  color: gray;
+  opacity: 50%;
+  color: black;
 }
