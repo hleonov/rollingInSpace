@@ -17,7 +17,7 @@ export class RollInfoComponent implements OnInit {
   @Input() charName : string;
 
   public Tactic = Tactic;
-  public readonly DEFAULT_OPPOSING_TN = 4;
+  public readonly INITIAL_OPPOSING_TN = 0;
   public readonly  TACTIC_INITIAL_VALUE = "Choose tactic...";
   readonly AUTOMATIC_SUCCESS = 6;
 
@@ -43,7 +43,7 @@ export class RollInfoComponent implements OnInit {
     let validators = [Validators.required, Validators.pattern(numberRegEx)];
     this.rollInfoForm = this.formBuilder.group({
       dicePool: [0, validators],
-      targetNumber: [this.DEFAULT_OPPOSING_TN, validators],
+      targetNumber: [this.INITIAL_OPPOSING_TN, validators],
       playerTactic : [this.TACTIC_INITIAL_VALUE],
       gameMasterTactic : [{value: this.TACTIC_INITIAL_VALUE, disabled: !this.parentEnabledGM}]
     });
@@ -62,7 +62,7 @@ createRollInfoDto(info : any): RollInfoDto {
   var dto = new RollInfoDto();
   dto.name = this.charName;
   dto.dicePool = info.dicePool ?? this.rollInfoForm.get("dicePool")?.value ?? 0;
-  dto.targetNumber = info.targetNumber ?? this.rollInfoForm.get("targetNumber")?.value ?? this.DEFAULT_OPPOSING_TN
+  dto.targetNumber = info.targetNumber ?? this.rollInfoForm.get("targetNumber")?.value ?? this.INITIAL_OPPOSING_TN
   dto.pcTactic = info.playerTactic ?? this.rollInfoForm.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
   dto.gmTactic = info.gameMasterTactic ?? this.rollInfoForm.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
   dto.rollResult = this.numOfSuccesses; 
