@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { TacticTable } from "../models/entity/TacticTable";
 import { Tactic } from "../models/entity/Tactic";
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { WebsocketService } from '../services/websocket.service';
@@ -18,7 +17,7 @@ export class RollInfoComponent implements OnInit {
   @Input() parentEnabledGM : FormControl;
   @Input() charName : string;
 
-  public Tactic = Tactic;
+  public Tactic = Tactic; //for the selecttion dropdown iteration
   public readonly INITIAL_OPPOSING_TN = 0;
   public readonly  TACTIC_INITIAL_VALUE = "Choose tactic...";
 
@@ -137,7 +136,10 @@ rollAndSync() {
 
   resetForm() {
     console.log("reset form");
-    this.rollInfoForm.get('gmInfo')?.reset();
+    this.rollInfoForm.reset();
+    this.numOfSuccesses = 0;
+    this.webSocketService.sendRollInfoDto(this.createPlayerRollInfoDto({}));
+    this.webSocketService.sendGmRollInfoDto(this.createGmRollInfoDto({exposeGMTactic: true}));
   }
 }
 
