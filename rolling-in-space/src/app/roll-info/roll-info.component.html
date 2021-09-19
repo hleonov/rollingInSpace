@@ -1,25 +1,27 @@
 <form class="player_roll" [formGroup]="rollInfoForm">
-    <label class="top_header wide">Dice pool</label>
-    <input class="wide dice" type="number" min="0" 
-        onkeypress="validate(event)" formControlName="dicePool">
-    <select class="wide tactic" formControlName="playerTactic">
-        <option selected disabled hidden>Choose tactic...</option>
-        <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.value}}"> {{tactic.value}}</option>
-    </select>
+    <ng-container formGroupName="playerInfo">
+        <label class="top_header wide">Dice pool</label>
+        <input class="wide dice" type="number" min="0" onkeypress="validate(event)" formControlName="dicePool">
+        <select class="wide tactic" formControlName="playerTactic">
+            <option selected disabled hidden>Choose tactic...</option>
+            <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.value}}"> {{tactic.value}}</option>
+        </select>
+    </ng-container>
     <button class="roll down wide" (click)="rollDice()"></button>
     <label class="top_header stat_roll_line"></label>
     <label class="stat_roll_line">{{numOfSuccesses}}</label>
     <label class="top_header stat_roll_line"></label>
     <div class="roll up wide"></div>
-    <select formEnabledControl [enableControl]="parentEnabledGM.value" 
-        [ngClass]="{'formDisabled' : !parentEnabledGM.value}"
-        class="wide tactic opposing" formControlName="gameMasterTactic"> <!--formControlName="gameMasterTactic"-->
+    <ng-container formGroupName="gmInfo">
+    <select formEnabledControl [enableControl]="parentEnabledGM.value" [ngClass]="{'formDisabled' : !parentEnabledGM.value}"
+        class="wide tactic opposing" formControlName="gameMasterTactic">
+        <!--formControlName="gameMasterTactic"-->
         <option selected disabled hidden>Choose tactic...</option>
         <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.value}}"> {{tactic.value}}</option>
     </select>
-    <input class="wide tn opposing" type="number" 
-        onkeypress="validate(event)" formControlName="targetNumber">
+    <input class="wide tn opposing" type="number" onkeypress="validate(event)" formControlName="targetNumber">
     <label class="bottom_header wide">Target Number (TN)</label>
+    </ng-container>
 </form>
 
 <!-- <div> 

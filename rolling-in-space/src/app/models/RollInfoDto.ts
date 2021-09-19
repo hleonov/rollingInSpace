@@ -1,11 +1,8 @@
 import { Tactic } from "./Tactic";
 
-export class RollInfoDto {
+export class PlayerRollInfoDto {
     name: string;
     dicePool: number;
-    targetNumber: number;
     pcTactic: Tactic;
-    gmTactic: Tactic;
     rollResult: number;
-    exposeGMTactic : boolean;
 }

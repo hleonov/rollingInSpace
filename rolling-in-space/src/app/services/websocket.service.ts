@@ -3,8 +3,9 @@ import { Observable, Subject } from "rxjs";
 
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import { RollInfoDto } from "../models/RollInfoDto";
+import { PlayerRollInfoDto } from "../models/RollInfoDto";
 import { StatsDto } from "../models/StatsDto";
+import { GmRollInfoDto } from "../models/GmRollInfoDto";
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,9 @@ export class WebsocketService {
   stompClient: any;
   message : string;
   private _statsEvents: Subject<StatsDto> = new Subject();
-  private _rollBoxEvents : Subject<RollInfoDto> = new Subject();
-
+  private _playerRollInfoEvents : Subject<PlayerRollInfoDto> = new Subject();
+  private _gmInfoEvents : Subject<GmRollInfoDto> = new Subject();
+  
   constructor() { 
     if (isDevMode()) {
       this.WS_URL = 'http://localhost:8080';
@@ -34,8 +36,11 @@ export class WebsocketService {
         _this.stompClient.subscribe('/topic/consume_stats', function (wsEvent :any) { //consume stats changes from backend (WS)
           _this.handleStatsEvent(wsEvent);
         });
-        _this.stompClient.subscribe('/topic/consume_roll', function (wsEvent :any) { //consume roll info changes from backend (WS)
-          _this.handleRollBoxEvent(wsEvent);
+        _this.stompClient.subscribe('/topic/consume_roll', function (wsEvent :any) { //consume player roll info changes from backend (WS)
+          _this.handlePlayerInfoEvent(wsEvent);
+        });
+        _this.stompClient.subscribe('/topic/consume_gminfo', function (wsEvent :any) { //consume gm roll info changes from backend (WS)
+          _this.handleGmInfoEvents(wsEvent);
         });
       });
     }
@@ -44,18 +49,25 @@ export class WebsocketService {
     return this._statsEvents.asObservable();
   }
 
-  public get rollBoxChangedEvents() : Observable<RollInfoDto> {
-    return this._rollBoxEvents.asObservable();
+  public get PlayerRollInfoChangedEvents() : Observable<PlayerRollInfoDto> {
+    return this._playerRollInfoEvents.asObservable();
+  }
+
+  public get gmInfoChangedEvents() : Observable<GmRollInfoDto> {
+    return this._gmInfoEvents.asObservable();
   }
 
   handleStatsEvent(wsEvent:any) {
-      //console.log("consmued from websocket: "+wsEvent+"\n"+wsEvent.body);
       this._statsEvents.next(JSON.parse(wsEvent.body));
   }
 
-  handleRollBoxEvent(wsEvent:any) {
+  handlePlayerInfoEvent(wsEvent:any) {
+    this._playerRollInfoEvents.next(JSON.parse(wsEvent.body));
+  }
+
+  handleGmInfoEvents(wsEvent:any) {
     //console.log("consuming info from roll box: "+wsEvent+"\n"+wsEvent.body);
-    this._rollBoxEvents.next(JSON.parse(wsEvent.body));
+    this._gmInfoEvents.next(JSON.parse(wsEvent.body));
   }
 
   disconnect() {
@@ -72,16 +84,21 @@ export class WebsocketService {
     return this.stompClient;
   }
 
-  // this sends the character stats back to the backend
+  // sends the character stats back to the backend
   sendStatsDto(dto: StatsDto) {
     this.stompClient.send('/topic/stats',
       {}, JSON.stringify(dto));
   }
 
-  //this sends the roll box information to the backend
-  sendRollInfoDto(dto: RollInfoDto) {
+  // sends the player roll dto to the backend
+  sendRollInfoDto(dto: PlayerRollInfoDto) {
     this.stompClient.send('/topic/roll',
     {}, JSON.stringify(dto));
   }
 
+  // sends the gm roll dto to the backend
+  sendGmRollInfoDto(dto: GmRollInfoDto) {
+      this.stompClient.send('/topic/gminfo',
+      {}, JSON.stringify(dto));
+    }
 }

@@ -4,7 +4,8 @@ import { TacticTable } from "../models/TacticTable";
 import { Tactic } from "../models/Tactic";
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { WebsocketService } from '../services/websocket.service';
-import { RollInfoDto } from '../models/RollInfoDto';
+import { PlayerRollInfoDto as PlayerRollInfoDto } from '../models/RollInfoDto';
+import { GmRollInfoDto } from '../models/GmRollInfoDto';
 
 @Component({
   selector: 'app-roll-info',
@@ -29,64 +30,92 @@ export class RollInfoComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private  tacticTable: TacticTable, 
     private webSocketService: WebsocketService) { 
     this.numOfSuccesses = 0;
-    this.initRollingForm();
+   this.initRollInfoForm();
   }
 
   ngOnInit(): void {
-    this.webSocketService.rollBoxChangedEvents.subscribe(dto => {
-      this.handleRollInfoChanges(dto);
+    this.webSocketService.PlayerRollInfoChangedEvents.subscribe((dto : PlayerRollInfoDto) => {
+      this.handlePlayerRollInfoChanges(dto);
+    })
+    this.webSocketService.gmInfoChangedEvents.subscribe((dto : GmRollInfoDto) => {
+      this.handleGmRollInfoChanges(dto);
     })
   }
 
-  private initRollingForm() {
+  private initRollInfoForm() {
     let numberRegEx = /^[0-9]\d*$/g;
     let validators = [Validators.required, Validators.pattern(numberRegEx)];
     this.rollInfoForm = this.formBuilder.group({
-      dicePool: [0, validators],
-      targetNumber: [this.INITIAL_OPPOSING_TN, validators],
-      playerTactic : [this.TACTIC_INITIAL_VALUE],
-      gameMasterTactic : [{value: this.TACTIC_INITIAL_VALUE, disabled: !this.parentEnabledGM}]
-    });
-    
-    this.rollInfoForm.valueChanges
-      .pipe(debounceTime(700))
-      .pipe(distinctUntilChanged())
-      .subscribe((info: any) => {
-        this.webSocketService.sendRollInfoDto(
-           this.createRollInfoDto(info)
-        )
-      });
+      playerInfo: this.formBuilder.group({
+       dicePool: [0, validators],
+        playerTactic: [this.TACTIC_INITIAL_VALUE]
+     }),
+     gmInfo : this.formBuilder.group({
+        targetNumber: [this.INITIAL_OPPOSING_TN, validators],
+        gameMasterTactic: [{ value: this.TACTIC_INITIAL_VALUE, disabled: !this.parentEnabledGM }]
+      })
+   });
+
+   this.rollInfoForm.get('playerInfo')?.valueChanges
+    .pipe(debounceTime(700)).pipe(distinctUntilChanged()).subscribe((info: any) => {
+     this.webSocketService.sendRollInfoDto(
+        this.createPlayerRollInfoDto(info)
+     )
+   });
+   this.rollInfoForm.get('gmInfo')?.valueChanges
+   .pipe(debounceTime(700)).pipe(distinctUntilChanged()).subscribe((info: any) => {
+    this.webSocketService.sendGmRollInfoDto(
+       this.createGmRollInfoDto(info)
+    )
+  });
+      
   }
-  
-createRollInfoDto(info : any): RollInfoDto {
-  var dto = new RollInfoDto();
+
+createPlayerRollInfoDto(info : any): PlayerRollInfoDto {
+  var dto = new PlayerRollInfoDto();
   dto.name = this.charName;
-  dto.dicePool = info.dicePool ?? this.rollInfoForm.get("dicePool")?.value ?? 0;
-  dto.targetNumber = info.targetNumber ?? this.rollInfoForm.get("targetNumber")?.value ?? this.INITIAL_OPPOSING_TN
-  dto.pcTactic = info.playerTactic ?? this.rollInfoForm.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
-  dto.gmTactic = info.gameMasterTactic ?? this.rollInfoForm.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
+  dto.dicePool = info.dicePool ?? this.rollInfoForm.get('playerInfo')?.get("dicePool")?.value ?? 0;
+  dto.pcTactic = info.playerTactic ?? this.rollInfoForm.get('playerInfo')?.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
   dto.rollResult = this.numOfSuccesses; 
-  dto.exposeGMTactic = info.exposeGMTactic ?? false;
   return dto;
 }
 
-handleRollInfoChanges(dto : RollInfoDto) {
+createGmRollInfoDto(info : any) : GmRollInfoDto {
+  var dto = new GmRollInfoDto();
+  dto.name = this.charName;
+  dto.targetNumber = info.targetNumber ?? this.rollInfoForm.get('gmInfo')?.get("targetNumber")?.value ?? this.INITIAL_OPPOSING_TN
+  dto.gmTactic = info.gameMasterTactic ?? this.rollInfoForm.get('gmInfo')?.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
+  dto.exposeGMTactic = info.exposeGMTactic ?? false;
+  return dto;
+}
+handlePlayerRollInfoChanges(dto : PlayerRollInfoDto) {
   if (dto.name !== this.charName) {
     return;
   }
-  console.log("consuming roll for char: "+dto.name)
-  //do not change the shown form value for GM tactics, unless it was changed from own client, but store the dto one secretly
-  const currentGMTactic = this.rollInfoForm.get("gameMasterTactic")?.value || this.TACTIC_INITIAL_VALUE ;
+  console.log("consuming player info for char: "+dto.name)
   this.numOfSuccesses = dto.rollResult;
-  this.rollInfoForm.setValue({
+  this.rollInfoForm.get('playerInfo')?.setValue({
     dicePool : dto.dicePool,
-    targetNumber: dto.targetNumber,
     playerTactic : dto.pcTactic,
+  }, {emitEvent: false});
+}
+ 
+
+handleGmRollInfoChanges(dto : GmRollInfoDto) {
+  if (dto.name !== this.charName) {
+    return;
+  }
+  //do not change the shown form value for GM tactics, unless it was changed from own client, but store the dto one secretly
+  const currentGMTactic = this.rollInfoForm.get('gmInfo')?.get("gameMasterTactic")?.value || this.TACTIC_INITIAL_VALUE ;
+  this.theGmTactic = dto.gmTactic;
+  console.log("consuming GM info for char: "+dto.name+"\tsetting hidden gmTactics: "+this.theGmTactic)
+
+  this.rollInfoForm.get('gmInfo')?.setValue({
+    targetNumber: dto.targetNumber,
     gameMasterTactic : dto.exposeGMTactic ? this.theGmTactic : currentGMTactic
   }, {emitEvent: false});
-  this.theGmTactic = dto.gmTactic;
 }
-  
+
   //step 2
   adjustDiceAndTN(numDice : number, TN : number) : [number, number] {
     let adjustedDiceNum = numDice;
@@ -127,17 +156,16 @@ handleRollInfoChanges(dto : RollInfoDto) {
 
   //step 1
   adjustTNaccordingToTactic(TN : number) : number {
-    let playerT = this.rollInfoForm.get("playerTactic")?.value;
-    let gmT = this.rollInfoForm.get("gameMasterTactic")?.value;
+    let playerT = this.rollInfoForm.get('playerInfo')?.get("playerTactic")?.value;
     
-    console.log("player tactic: "+playerT+"\tgm tactic: "+gmT);
-    return TN + this.tacticTable.getModification(playerT, gmT);
+    console.log("player tactic: "+playerT+"\tgm tactic: "+this.theGmTactic);
+    return TN + this.tacticTable.getModification(playerT, this.theGmTactic);
   }
 
   rollDice() {
     let successCounter = 0;
-    let numDice  : number = this.rollInfoForm.get("dicePool")?.value;
-    let TN : number = this.rollInfoForm.get("targetNumber")?.value;
+    let numDice  : number = this.rollInfoForm.get('playerInfo')?.get("dicePool")?.value;
+    let TN : number = this.rollInfoForm.get('gmInfo')?.get("targetNumber")?.value;
     //step 1: tactics modifies TN
     let modifiedTN : number = this.adjustTNaccordingToTactic(TN);
     console.log("after tactic modification: "+modifiedTN)
@@ -153,7 +181,8 @@ handleRollInfoChanges(dto : RollInfoDto) {
     this.numOfSuccesses = successCounter;
 
     //step 4: sync others
-    this.webSocketService.sendRollInfoDto(this.createRollInfoDto({exposeGMTactic: true}));
+    this.webSocketService.sendRollInfoDto(this.createPlayerRollInfoDto({}));
+    this.webSocketService.sendGmRollInfoDto(this.createGmRollInfoDto({gameMasterTactic: this.theGmTactic, exposeGMTactic: true}));
   }
 
   //step 3
