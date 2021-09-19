@@ -5,4 +5,11 @@ export class PlayerRollInfoDto {
     dicePool: number;
     pcTactic: Tactic;
     rollResult: number;
+
+    constructor(name: string, dicePool: number, pcTactic: Tactic, rollResult: number) {
+        this.name = name;
+        this.dicePool = dicePool;
+        this.pcTactic = pcTactic;
+        this.rollResult = rollResult;
+    }
 }

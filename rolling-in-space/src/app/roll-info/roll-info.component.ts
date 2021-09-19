@@ -71,22 +71,21 @@ export class RollInfoComponent implements OnInit {
   }
 
 createPlayerRollInfoDto(info : any): PlayerRollInfoDto {
-  var dto = new PlayerRollInfoDto();
-  dto.name = this.charName;
-  dto.dicePool = info.dicePool ?? this.rollInfoForm.get('playerInfo')?.get("dicePool")?.value ?? 0;
-  dto.pcTactic = info.playerTactic ?? this.rollInfoForm.get('playerInfo')?.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
-  dto.rollResult = this.numOfSuccesses; 
-  return dto;
+  return new PlayerRollInfoDto(
+    this.charName,
+    info.dicePool ?? this.rollInfoForm.get('playerInfo')?.get("dicePool")?.value ?? 0,
+    info.playerTactic ?? this.rollInfoForm.get('playerInfo')?.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE,
+    this.numOfSuccesses);
 }
 
 createGmRollInfoDto(info : any) : GmRollInfoDto {
-  var dto = new GmRollInfoDto();
-  dto.name = this.charName;
-  dto.targetNumber = info.targetNumber ?? this.rollInfoForm.get('gmInfo')?.get("targetNumber")?.value ?? this.INITIAL_OPPOSING_TN
-  dto.gmTactic = info.gameMasterTactic ?? this.rollInfoForm.get('gmInfo')?.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE;
-  dto.exposeGMTactic = info.exposeGMTactic ?? false;
-  return dto;
+  return new GmRollInfoDto(
+    this.charName,
+    info.targetNumber ?? this.rollInfoForm.get('gmInfo')?.get("targetNumber")?.value ?? this.INITIAL_OPPOSING_TN,
+    info.gameMasterTactic ?? this.rollInfoForm.get('gmInfo')?.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE,
+    info.exposeGMTactic ?? false);
 }
+
 handlePlayerRollInfoChanges(dto : PlayerRollInfoDto) {
   if (dto.name !== this.charName) {
     return;
@@ -99,7 +98,6 @@ handlePlayerRollInfoChanges(dto : PlayerRollInfoDto) {
   }, {emitEvent: false});
 }
  
-
 handleGmRollInfoChanges(dto : GmRollInfoDto) {
   if (dto.name !== this.charName) {
     return;
@@ -129,7 +127,6 @@ rollAndSync() {
   }
 
   readyToRoll() : boolean{
-    //console.log("checking theGMtactics: " + (this.theGmTactic?? "none"))
         return (this.rollInfoForm.get('gminfo')?.get("targetNumber")?.value != 0
           && this.theGmTactic ? (this.theGmTactic.toString() !== this.TACTIC_INITIAL_VALUE ? true : false) : false);
   }
