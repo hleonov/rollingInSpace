@@ -1,4 +1,4 @@
-import { Tactic } from "./Tactic";
+import { Tactic } from "../entity/Tactic";
 
 export class PlayerRollInfoDto {
     name: string;

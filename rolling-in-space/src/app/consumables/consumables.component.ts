@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { CharacterConsumables } from '../models/character-consumables';
+import { CharacterConsumables } from '../models/entity/character-consumables';
 import { WebsocketService } from "../services/websocket.service";
 
 @Component({

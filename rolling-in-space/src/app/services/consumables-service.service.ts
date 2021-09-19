@@ -2,7 +2,7 @@ import { Injectable, isDevMode} from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { CharacterConsumables } from '../models/character-consumables';
+import { CharacterConsumables } from '../models/entity/character-consumables';
 import { Subject } from 'rxjs';
 import { WebsocketService } from './websocket.service';
 

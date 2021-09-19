@@ -1,4 +1,4 @@
-import { Consumable } from "./character-consumables";
+import { Consumable } from "../entity/character-consumables";
 
 
 export class StatsDto {

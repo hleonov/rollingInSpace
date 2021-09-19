@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { TacticTable } from "../models/TacticTable";
-import { Tactic } from "../models/Tactic";
+import { TacticTable } from "../models/entity/TacticTable";
+import { Tactic } from "../models/entity/Tactic";
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { WebsocketService } from '../services/websocket.service';
-import { PlayerRollInfoDto as PlayerRollInfoDto } from '../models/RollInfoDto';
-import { GmRollInfoDto } from '../models/GmRollInfoDto';
+import { PlayerRollInfoDto as PlayerRollInfoDto } from '../models/dto/RollInfoDto';
+import { GmRollInfoDto } from '../models/dto/GmRollInfoDto';
 
 @Component({
   selector: 'app-roll-info',

@@ -1,11 +1,11 @@
-import { Injectable, EventEmitter, isDevMode } from "@angular/core";
+import { Injectable, isDevMode } from "@angular/core";
 import { Observable, Subject } from "rxjs"; 
 
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import { PlayerRollInfoDto } from "../models/RollInfoDto";
-import { StatsDto } from "../models/StatsDto";
-import { GmRollInfoDto } from "../models/GmRollInfoDto";
+import { PlayerRollInfoDto } from "../models/dto/RollInfoDto";
+import { StatsDto } from "../models/dto/StatsDto";
+import { GmRollInfoDto } from "../models/dto/GmRollInfoDto";
 
 @Injectable({
   providedIn: 'root'

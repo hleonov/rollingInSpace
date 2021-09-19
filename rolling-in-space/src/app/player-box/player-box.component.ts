@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { CharacterConsumables, Consumable } from '../models/character-consumables';
+import { CharacterConsumables, Consumable } from '../models/entity/character-consumables';
 import { ConsumablesService } from '../services/consumables-service.service';
 import { WebsocketService } from '../services/websocket.service';
-import { StatsDto } from "../models/StatsDto";
+import { StatsDto } from "../models/dto/StatsDto";
 
 @Component({
   selector: 'app-player-box',
