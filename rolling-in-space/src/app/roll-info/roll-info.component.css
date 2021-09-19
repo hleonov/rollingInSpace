@@ -24,8 +24,13 @@
   }
   
 .roll.down:hover  {
-    background-color: #f1e3e5;
-  }
+  background-color: rgb(184, 29, 29);
+}
+
+.roll.down.ready:hover  {
+  background-color: greenyellow;
+}
+  
   
 .up {
     transform: rotate(180deg);

@@ -7,7 +7,7 @@
             <option *ngFor="let tactic of Tactic | keyvalue" value="{{tactic.value}}"> {{tactic.value}}</option>
         </select>
     </ng-container>
-    <button class="roll down wide" (click)="rollDice()"></button>
+    <button class="roll down wide" (click)="rollDice()" [ngClass]="{'ready' : readyToRoll()}"></button>
     <label class="top_header stat_roll_line"></label>
     <label class="stat_roll_line">{{numOfSuccesses}}</label>
     <label class="top_header stat_roll_line"></label>
