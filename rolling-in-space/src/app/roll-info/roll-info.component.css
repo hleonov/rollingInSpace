@@ -30,7 +30,9 @@
 .roll.down.ready:hover  {
   background-color: greenyellow;
 }
-  
+.roll.up:hover  {
+  background-color: rgb(83, 29, 184);
+}
   
 .up {
     transform: rotate(180deg);

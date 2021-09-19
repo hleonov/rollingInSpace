@@ -207,10 +207,14 @@ handleGmRollInfoChanges(dto : GmRollInfoDto) {
   }
 
   readyToRoll() : boolean{
-    console.log("checking theGMtactics: " + (this.theGmTactic?? "none"))
+    //console.log("checking theGMtactics: " + (this.theGmTactic?? "none"))
         return (this.rollInfoForm.get('gminfo')?.get("targetNumber")?.value != 0
           && this.theGmTactic ? (this.theGmTactic.toString() !== this.TACTIC_INITIAL_VALUE ? true : false) : false);
-    
+  }
+
+  resetForm() {
+    console.log("reset form");
+    this.rollInfoForm.get('gmInfo')?.reset();
   }
 }
 
