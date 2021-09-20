@@ -33,7 +33,9 @@
 
 .gm_checkbox {
     color:azure;
-    position: relative;
+    position: fixed;
+    bottom: 0;
+    /* position: absolute; */
 }
 ::ng-deep .mat-checkbox-frame {
     border-color: white
