@@ -20,11 +20,14 @@ export class RollInfoComponent implements OnInit {
   public Tactic = Tactic; //for the selecttion dropdown iteration
   public readonly INITIAL_OPPOSING_TN = 0;
   public readonly  TACTIC_INITIAL_VALUE = "Choose tactic...";
+  private readonly playerGroup = 'playerInfo';
+  private readonly gmGroup = 'gmInfo';
 
   private theGmTactic : Tactic;
 
   numOfSuccesses : number;
   rollInfoForm : FormGroup;
+
 
   constructor(private formBuilder: FormBuilder, 
     private webSocketService: WebsocketService, private rollService: RollService) { 
@@ -55,13 +58,13 @@ export class RollInfoComponent implements OnInit {
       })
    });
 
-   this.rollInfoForm.get('playerInfo')?.valueChanges
+   this.rollInfoForm.get(this.playerGroup)?.valueChanges
     .pipe(debounceTime(700)).pipe(distinctUntilChanged()).subscribe((info: any) => {
      this.webSocketService.sendRollInfoDto(
         this.createPlayerRollInfoDto(info)
      )
    });
-   this.rollInfoForm.get('gmInfo')?.valueChanges
+   this.rollInfoForm.get(this.gmGroup)?.valueChanges
    .pipe(debounceTime(700)).pipe(distinctUntilChanged()).subscribe((info: any) => {
     this.webSocketService.sendGmRollInfoDto(
        this.createGmRollInfoDto(info)
@@ -73,16 +76,16 @@ export class RollInfoComponent implements OnInit {
 createPlayerRollInfoDto(info : any): PlayerRollInfoDto {
   return new PlayerRollInfoDto(
     this.charName,
-    info.dicePool ?? this.rollInfoForm.get('playerInfo')?.get("dicePool")?.value ?? 0,
-    info.playerTactic ?? this.rollInfoForm.get('playerInfo')?.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE,
+    info.dicePool ?? this.rollInfoForm.get(this.playerGroup)?.get("dicePool")?.value ?? 0,
+    info.playerTactic ?? this.rollInfoForm.get(this.playerGroup)?.get("playerTactic")?.value ?? this.TACTIC_INITIAL_VALUE,
     this.numOfSuccesses);
 }
 
 createGmRollInfoDto(info : any) : GmRollInfoDto {
   return new GmRollInfoDto(
     this.charName,
-    info.targetNumber ?? this.rollInfoForm.get('gmInfo')?.get("targetNumber")?.value ?? this.INITIAL_OPPOSING_TN,
-    info.gameMasterTactic ?? this.rollInfoForm.get('gmInfo')?.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE,
+    info.targetNumber ?? this.rollInfoForm.get(this.gmGroup)?.get("targetNumber")?.value ?? this.INITIAL_OPPOSING_TN,
+    info.gameMasterTactic ?? this.rollInfoForm.get(this.gmGroup)?.get("gameMasterTactic")?.value ?? this.TACTIC_INITIAL_VALUE,
     info.exposeGMTactic ?? false);
 }
 
@@ -92,7 +95,7 @@ handlePlayerRollInfoChanges(dto : PlayerRollInfoDto) {
   }
   console.log("consuming player info for char: "+dto.name)
   this.numOfSuccesses = dto.rollResult;
-  this.rollInfoForm.get('playerInfo')?.setValue({
+  this.rollInfoForm.get(this.playerGroup)?.setValue({
     dicePool : dto.dicePool,
     playerTactic : dto.pcTactic,
   }, {emitEvent: false});
@@ -103,11 +106,11 @@ handleGmRollInfoChanges(dto : GmRollInfoDto) {
     return;
   }
   //do not change the shown form value for GM tactics, unless it was changed from own client, but store the dto one secretly
-  const currentGMTactic = this.rollInfoForm.get('gmInfo')?.get("gameMasterTactic")?.value || this.TACTIC_INITIAL_VALUE ;
+  const currentGMTactic = this.rollInfoForm.get(this.gmGroup)?.get("gameMasterTactic")?.value || this.TACTIC_INITIAL_VALUE ;
   this.theGmTactic = dto.gmTactic;
   console.log("consuming GM info for char: "+dto.name+"\tsetting hidden gmTactics: "+this.theGmTactic)
 
-  this.rollInfoForm.get('gmInfo')?.setValue({
+  this.rollInfoForm.get(this.gmGroup)?.setValue({
     targetNumber: dto.targetNumber,
     gameMasterTactic : dto.exposeGMTactic ? this.theGmTactic : currentGMTactic
   }, {emitEvent: false});
@@ -115,9 +118,9 @@ handleGmRollInfoChanges(dto : GmRollInfoDto) {
 
 rollAndSync() {
     this.numOfSuccesses = this.rollService.rollDice(
-      this.rollInfoForm.get('playerInfo')?.get("dicePool")?.value,
-      this.rollInfoForm.get('playerInfo')?.get("playerTactic")?.value,
-      this.rollInfoForm.get('gmInfo')?.get("targetNumber")?.value,
+      this.rollInfoForm.get(this.playerGroup)?.get("dicePool")?.value,
+      this.rollInfoForm.get(this.playerGroup)?.get("playerTactic")?.value,
+      this.rollInfoForm.get(this.gmGroup)?.get("targetNumber")?.value,
       this.theGmTactic,
     );
 
@@ -127,7 +130,7 @@ rollAndSync() {
   }
 
   readyToRoll() : boolean{
-        return (this.rollInfoForm.get('gminfo')?.get("targetNumber")?.value != 0
+        return (this.rollInfoForm.get(this.gmGroup)?.get("targetNumber")?.value != 0
           && this.theGmTactic ? (this.theGmTactic.toString() !== this.TACTIC_INITIAL_VALUE ? true : false) : false);
   }
 
