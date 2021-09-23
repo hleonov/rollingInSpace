@@ -1,4 +1,4 @@
-<form class="player_stats" [formGroup]="parentStatsForm">
+<form class="player_stats" [formGroup]="statForm">
     <label class="top_header"></label>
     <label class="top_header">max</label>
     <label class="top_header">cur</label>
@@ -32,6 +32,6 @@
          formControlName="mentalCur" min="0">
      <button class="rest wide" type="button" (click)="rest()">
           Rest ({{currentChar.timesRested}})
-          <ng-container *ngIf="pointsToAllocate > 0"> Allocate: {{alloc}}</ng-container>
+          <ng-container *ngIf="pointsToAllocate > 0"> Allocate: {{pointsToAllocate}}</ng-container>
      </button>
 </form>
