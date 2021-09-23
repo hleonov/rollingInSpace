@@ -32,5 +32,6 @@
          formControlName="mentalCur" min="0">
      <button class="rest wide" type="button" (click)="rest()">
           Rest ({{currentChar.timesRested}})
+          <ng-container *ngIf="pointsToAllocate > 0"> Allocate: {{alloc}}</ng-container>
      </button>
 </form>

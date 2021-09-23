@@ -13,7 +13,7 @@ import { WebsocketService } from "../services/websocket.service";
 export class ConsumablesComponent implements OnInit {
   @Input() currentChar : CharacterConsumables;
   @Input() parentStatsForm : FormGroup;
-
+  public pointsToAllocate = 0;
   constructor() {
   }
   
@@ -45,6 +45,7 @@ export class ConsumablesComponent implements OnInit {
     this.currentChar.timesRested = (this.currentChar.timesRested+1)%5;
     console.log(this.currentChar.timesRested);
     this.parentStatsForm.get('timesRested')?.setValue(this.currentChar.timesRested);
+    this.pointsToAllocate = Math.floor(Math.random() * 6) + 1;
   }
 
 //this.charCons.find( c: (c.name == charConsum.name)
