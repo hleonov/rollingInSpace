@@ -36,6 +36,8 @@ export class RollInfoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.webSocketService.connect();
+    
     this.webSocketService.PlayerRollInfoChangedEvents.subscribe((dto : PlayerRollInfoDto) => {
       this.handlePlayerRollInfoChanges(dto);
     })
