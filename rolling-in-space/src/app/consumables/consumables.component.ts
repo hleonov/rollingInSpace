@@ -14,9 +14,10 @@ import { WebsocketService } from "../services/websocket.service";
 })
 export class ConsumablesComponent implements OnInit {
   @Input() currentChar : CharacterConsumables;
+  @Input() charList : CharacterConsumables[]
   public pointsToAllocate = 0;
   public statForm : FormGroup;
-
+  
   constructor(
     private formBuilder: FormBuilder,
     public webSocketService: WebsocketService) {
@@ -56,8 +57,9 @@ export class ConsumablesComponent implements OnInit {
       .pipe(debounceTime(700))
       .pipe(distinctUntilChanged())
       .subscribe((stats: any) => {
+        this.balanceRested();
         this.webSocketService.sendStatsDto(
-           this.createStatsDto(stat.name, stats)
+           this.createStatsDto(stats)
         )
       });
   }
@@ -66,7 +68,7 @@ export class ConsumablesComponent implements OnInit {
     if (dto.name !== this.currentChar.name) {
       return;
     }
-    console.log("consumed stats change in playerbox: "+dto);
+    console.log("consumed stats change: "+dto);
     // let i = this.charStatsList.findIndex( c =>(c.name == dto.name));
     //this.charCons.find( c: (c.name == charConsum.name)
     this.currentChar.timesRested = dto.timesRested;
@@ -85,9 +87,9 @@ export class ConsumablesComponent implements OnInit {
     }, {emitEvent: false});
   }
 
-   createStatsDto(name : string, stats: any): StatsDto {
+   createStatsDto(stats: any): StatsDto {
     var dto  = new StatsDto();
-    dto.name = name;
+    dto.name = this.currentChar.name;
     dto.might = new Consumable(stats.mightMax, stats.mightCur);
     dto.speed = new Consumable(stats.speedMax, stats.speedCur);
     dto.intellect = new Consumable(stats.intellectMax, stats.intellectCur);
@@ -102,6 +104,10 @@ export class ConsumablesComponent implements OnInit {
     console.log(this.currentChar.timesRested);
     this.statForm.get('timesRested')?.setValue(this.currentChar.timesRested);
     this.pointsToAllocate = Math.floor(Math.random() * 6) + 1;
+  }
+
+  balanceRested() {
+
   }
 
 }

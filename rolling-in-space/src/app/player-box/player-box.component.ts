@@ -12,7 +12,6 @@ import { ConsumablesService } from '../services/consumables-service.service';
 export class PlayerBoxComponent implements OnInit {
   
   charStatsList : CharacterConsumables[] = [];
-  charStatsForm : FormGroup[] = [];
   enableGM : FormControl;
 
   constructor(private consumableService : ConsumablesService) { 
