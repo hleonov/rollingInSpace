@@ -21,7 +21,7 @@ export class PlayerBoxComponent implements OnInit {
   ngOnInit(): void {
     console.log("init player box");
     this.consumableService.getCharacterConsumables()
-      .subscribe((data : any)=>  {
+      .subscribe((data : CharacterConsumables[])=>  {
         console.log(data);
         this.charStatsList = data;
     });
