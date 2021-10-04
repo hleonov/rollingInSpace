@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>New character </h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label for="name">Name</mat-label>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+  <!-- <mat-form-field appearance="fill">
+    <mat-label>Place instead of:</mat-label>
+    <input matInput [(ngModel)]="data.place">
+  </mat-form-field> -->
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Nope!</button>
+  <button mat-button (click)="addCharacter()" mat-dialog-close>Save me!</button>
+</div>

@@ -4,6 +4,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import {MatGridListModule} from '@angular/material/grid-list';
+import  {MatDialogModule } from '@angular/material/dialog'; 
+import { MatButtonModule } from '@angular/material/button'; 
+import {MatFormFieldModule} from '@angular/material/form-field'; 
 import { HttpClientModule } from '@angular/common/http'; 
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -14,6 +17,7 @@ import { ConsumablesComponent } from './consumables/consumables.component';
 import { RollInfoComponent } from './roll-info/roll-info.component';
 import { ConsumablesService } from './services/consumables-service.service';
 import { EnabledControlDirective } from './directives/enableControl';
+import { NewCharacterComponent } from './new-character/new-character.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +25,16 @@ import { EnabledControlDirective } from './directives/enableControl';
     PlayerBoxComponent,
     ConsumablesComponent,
     RollInfoComponent,
-    EnabledControlDirective
+    EnabledControlDirective,
+    NewCharacterComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MatInputModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
     MatGridListModule,
     HttpClientModule,
     ReactiveFormsModule,
