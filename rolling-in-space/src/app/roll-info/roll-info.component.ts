@@ -110,7 +110,7 @@ handleGmRollInfoChanges(dto : GmRollInfoDto) {
   //do not change the shown form value for GM tactics, unless it was changed from own client, but store the dto one secretly
   const currentGMTactic = this.rollInfoForm.get(this.gmGroup)?.get("gameMasterTactic")?.value || this.TACTIC_INITIAL_VALUE ;
   this.theGmTactic = dto.gmTactic;
-  console.log("consuming GM info for char: "+dto.name+"\tsetting hidden gmTactics: "+this.theGmTactic)
+  console.log("consuming GM info for char: "+dto.name)
 
   this.rollInfoForm.get(this.gmGroup)?.setValue({
     targetNumber: dto.targetNumber,
