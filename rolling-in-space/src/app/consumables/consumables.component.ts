@@ -2,8 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { StatsDto } from '../models/dto/StatsDto';
-import { CharacterConsumables, Consumable } from '../models/entity/character-consumables';
+import { CharacterConsumables } from '../models/entity/character-consumables';
 import { WebsocketService } from "../services/websocket.service";
+import { StatsFormObject } from '../models/entity/StatsFormObject';
 
 @Component({
   selector: 'app-consumables',
@@ -17,6 +18,7 @@ export class ConsumablesComponent implements OnInit {
   @Input() charList : CharacterConsumables[]
   public pointsToAllocate = 0;
   public statForm : FormGroup;
+  public statsFormObject : StatsFormObject
   
   constructor(
     private formBuilder: FormBuilder,
@@ -52,15 +54,16 @@ export class ConsumablesComponent implements OnInit {
       mentalCur: [stat.mental.currentValue,  validators],
       timesRested: [stat.timesRested]
     });
-
+    this.statsFormObject = new StatsFormObject(this.statForm.value)
     this.statForm.valueChanges
       .pipe(debounceTime(700))
       .pipe(distinctUntilChanged())
-      .subscribe((stats: any) => {
-        this.balanceRested();
+      .subscribe((stats: StatsFormObject) => {
+        this.balanceRested(stats);
         this.webSocketService.sendStatsDto(
            this.createStatsDto(stats)
         )
+        this.statsFormObject = this.statForm.value;
       });
   }
 
@@ -87,16 +90,8 @@ export class ConsumablesComponent implements OnInit {
     }, {emitEvent: false});
   }
 
-   createStatsDto(stats: any): StatsDto {
-    var dto  = new StatsDto();
-    dto.name = this.currentChar.name;
-    dto.might = new Consumable(stats.mightMax, stats.mightCur);
-    dto.speed = new Consumable(stats.speedMax, stats.speedCur);
-    dto.intellect = new Consumable(stats.intellectMax, stats.intellectCur);
-    dto.stress = new Consumable(stats.stressMax, stats.stressCur);
-    dto.mental = new Consumable(stats.mentalMax, stats.mentalCur);
-    dto.timesRested = stats.timesRested;
-    return dto;
+   createStatsDto(stats: StatsFormObject): StatsDto {
+      return (new StatsFormObject(stats)).toDto(stats, this.currentChar.name);
   }
 
   rest() {
@@ -106,11 +101,30 @@ export class ConsumablesComponent implements OnInit {
     this.pointsToAllocate = Math.floor(Math.random() * 6) + 1;
   }
 
-  balanceRested() {
+  balanceRested(stats: any) {
+    if (this.pointsToAllocate > 0) {
 
+      console.log("balancing rested with stats: " + stats)
+      debugger
+      let updated: number = this.updatedStat(this.statsFormObject, stats)
+      this.pointsToAllocate -= updated
+    }
   }
 
-}
+   updatedStat(prevObj : any, newObj: any) {
+    var updated = Object.keys(newObj).filter(prop =>  (prop != "timesRested") && (prevObj[prop] !== newObj[prop]));
+     if (updated.length == 0) {
+       return 0;
+     } else {
 
+
+       var diff = Object.keys(newObj).filter(prop => (prop != "timesRested") && (prevObj[prop] !== newObj[prop])).map(prop => newObj[prop] - prevObj[prop])
+
+       console.log("diff property: " + updated);
+       console.log("diff is: " + diff[0]);
+       return diff[0];
+     }
+   }
+}
 
 
