@@ -59,6 +59,8 @@ export class ConsumablesComponent implements OnInit {
       .pipe(debounceTime(700))
       .pipe(distinctUntilChanged())
       .subscribe((stats: StatsFormObject) => {
+        console.log(" LOOK form changes for: ",this.currentChar)
+        console.log("LOOK VALUES: ",stats)
         this.balanceRested(stats);
         this.webSocketService.sendStatsDto(
            this.createStatsDto(stats)
@@ -94,6 +96,10 @@ export class ConsumablesComponent implements OnInit {
       return (new StatsFormObject(stats)).toDto(stats, this.currentChar.name);
   }
 
+  onCharChange() {
+    this.handleStatsChange(this.currentChar);
+  }
+  
   rest() {
     this.currentChar.timesRested = (this.currentChar.timesRested+1)%5;
     console.log(this.currentChar.timesRested);
@@ -111,12 +117,11 @@ export class ConsumablesComponent implements OnInit {
     }
   }
 
-   updatedStat(prevObj : any, newObj: any) {
+   updatedStat(prevObj : any, newObj: any) : number {
     var updated = Object.keys(newObj).filter(prop =>  (prop != "timesRested") && (prevObj[prop] !== newObj[prop]));
      if (updated.length == 0) {
        return 0;
      } else {
-
 
        var diff = Object.keys(newObj).filter(prop => (prop != "timesRested") && (prevObj[prop] !== newObj[prop])).map(prop => newObj[prop] - prevObj[prop])
 

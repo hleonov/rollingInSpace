@@ -1,6 +1,6 @@
 <div class="name">{{currentChar.name}}
 <!-- ngModel ties it directly to the change the currentChar! no further action needed!-->
-<select [(ngModel)]="currentChar">
+<select [(ngModel)]="currentChar" (change)="onCharChange()">
      <option *ngFor="let char of charList"
        [ngValue]="char">
        <div>{{char.name}}</div>
