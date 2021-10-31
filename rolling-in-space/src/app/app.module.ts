@@ -18,6 +18,7 @@ import { RollInfoComponent } from './roll-info/roll-info.component';
 import { ConsumablesService } from './services/consumables-service.service';
 import { EnabledControlDirective } from './directives/enableControl';
 import { NewCharacterComponent } from './new-character/new-character.component';
+import { ChatLogComponent } from './chat-log/chat-log.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { NewCharacterComponent } from './new-character/new-character.component';
     ConsumablesComponent,
     RollInfoComponent,
     EnabledControlDirective,
-    NewCharacterComponent
+    NewCharacterComponent,
+    ChatLogComponent
   ],
   imports: [
     BrowserModule,

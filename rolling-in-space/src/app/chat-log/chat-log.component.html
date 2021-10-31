@@ -1,0 +1,13 @@
+<div *ngFor="let item of messageLog"> 
+        {{item}}
+</div>
+<form #loginForm=ngForm>
+   <div><br>
+    <textarea autocomplete="off" placeholder="Type Your Message..." 
+    name="newmessage" [(ngModel)]="newmessage" required></textarea>
+    <br>
+    <button class="btn btn-primary" (click)="sendMessage()" >
+        Send
+    </button>
+   </div>
+</form>

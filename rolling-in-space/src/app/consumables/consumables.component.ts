@@ -59,8 +59,8 @@ export class ConsumablesComponent implements OnInit {
       .pipe(debounceTime(700))
       .pipe(distinctUntilChanged())
       .subscribe((stats: StatsFormObject) => {
-        console.log(" LOOK form changes for: ",this.currentChar)
-        console.log("LOOK VALUES: ",stats)
+        // console.log(" LOOK form changes for: ",this.currentChar)
+        // console.log("LOOK VALUES: ",stats)
         this.balanceRested(stats);
         this.webSocketService.sendStatsDto(
            this.createStatsDto(stats)

@@ -27,6 +27,12 @@
     text-align: center;
 }
 
+.chatlog {
+    color:rgb(255, 251, 0);
+    position: relative;
+    z-index: 99;
+    float: right;
+}
 .gm_checkbox {
     color:azure;
     position: fixed;

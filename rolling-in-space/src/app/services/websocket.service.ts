@@ -18,7 +18,8 @@ export class WebsocketService {
   private _statsEvents: Subject<StatsDto> = new Subject();
   private _playerRollInfoEvents : Subject<PlayerRollInfoDto> = new Subject();
   private _gmInfoEvents : Subject<GmRollInfoDto> = new Subject();
-  
+  private _chatlogEvents : Subject<string> = new Subject();
+
   constructor() { 
     if (isDevMode()) {
       this.WS_URL = 'http://localhost:8080';
@@ -42,6 +43,9 @@ export class WebsocketService {
         _this.stompClient.subscribe('/topic/consume_gminfo', function (wsEvent :any) { //consume gm roll info changes from backend (WS)
           _this.handleGmInfoEvents(wsEvent);
         });
+        _this.stompClient.subscribe('/topic/consume_chatlog', function(wsEvent :any){ //consume chatlog from backend (WS)
+          _this.handleChatLogEvents(wsEvent);
+        });
       });
     }
   }
@@ -57,6 +61,10 @@ export class WebsocketService {
     return this._gmInfoEvents.asObservable();
   }
 
+  public get chatLogEvents() : Observable<string> {
+    return this._chatlogEvents.asObservable();
+  }
+
   handleStatsEvent(wsEvent:any) {
       this._statsEvents.next(JSON.parse(wsEvent.body));
   }
@@ -68,6 +76,11 @@ export class WebsocketService {
   handleGmInfoEvents(wsEvent:any) {
     //console.log("consuming info from roll box: "+wsEvent+"\n"+wsEvent.body);
     this._gmInfoEvents.next(JSON.parse(wsEvent.body));
+  }
+
+  handleChatLogEvents(wsEvent:any) {
+    console.log(JSON.parse(wsEvent.body));
+    this._chatlogEvents.next(JSON.parse(wsEvent.body));
   }
 
   disconnect() {
@@ -100,5 +113,12 @@ export class WebsocketService {
   sendGmRollInfoDto(dto: GmRollInfoDto) {
       this.stompClient.send('/topic/gminfo',
       {}, JSON.stringify(dto));
-    }
+  }
+
+  //send message into chat log
+  sendChatMessage(message : string) {
+    this.stompClient.send('/topic/chatlog',
+    {},
+    JSON.stringify(message));
+  }
 }
