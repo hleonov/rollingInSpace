@@ -1,13 +1,14 @@
-<div *ngFor="let item of messageLog"> 
+<div class="scrollable">
+    <div *ngFor="let item of messageLog">
         {{item}}
+    </div>
 </div>
 <form #loginForm=ngForm>
-   <div><br>
-    <textarea autocomplete="off" placeholder="Type Your Message..." 
-    name="newmessage" [(ngModel)]="newmessage" required></textarea>
-    <br>
-    <button class="btn btn-primary" (click)="sendMessage()" >
-        Send
-    </button>
-   </div>
+    <div><br>
+        <textarea autocomplete="off" placeholder="Type Your Message..." name="newmessage" [(ngModel)]="newmessage"
+            required></textarea>
+        <br>
+        <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+        <button class="btn btn-primary" (click)="clearLog()">Clear log</button>
+    </div>
 </form>

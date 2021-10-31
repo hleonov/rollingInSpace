@@ -27,8 +27,10 @@ export class ChatLogComponent implements OnInit {
   }  
   
   showMessage(message : string) {
-    console.log("this was my message: ",message)
      this.messageLog.push(message);  
   }
 
+  clearLog() {
+    this.messageLog = []
+  }
 }
