@@ -6,16 +6,18 @@ import { WebsocketService } from '../services/websocket.service';
 import { PlayerRollInfoDto as PlayerRollInfoDto } from '../models/dto/RollInfoDto';
 import { GmRollInfoDto } from '../models/dto/GmRollInfoDto';
 import { RollService } from '../services/roll-service';
+import { CharChangeService } from '../services/char-change.service';
 
 @Component({
   selector: 'app-roll-info',
   templateUrl: './roll-info.component.html',
-  styleUrls: ['./roll-info.component.css']
+  styleUrls: ['./roll-info.component.css'],
 })
-export class RollInfoComponent implements OnInit {
+export class RollInfoComponent implements OnInit{
 
   @Input() parentEnabledGM : FormControl;
   @Input() charName : string;
+  @Input() playerBoxNum : number;
 
   public Tactic = Tactic; //for the selecttion dropdown iteration
   public readonly INITIAL_OPPOSING_TN = 0;
@@ -28,12 +30,12 @@ export class RollInfoComponent implements OnInit {
   numOfSuccesses : number;
   rollInfoForm : FormGroup;
 
-
   constructor(private formBuilder: FormBuilder, 
-    private webSocketService: WebsocketService, 
-    private rollService: RollService) { 
+              private webSocketService: WebsocketService, 
+              private rollService: RollService, 
+              private charChangeService: CharChangeService) { 
     this.numOfSuccesses = 0;
-   this.initRollInfoForm();
+    this.initRollInfoForm();
   }
 
   ngOnInit(): void {
@@ -45,6 +47,12 @@ export class RollInfoComponent implements OnInit {
     this.webSocketService.gmInfoChangedEvents.subscribe((dto : GmRollInfoDto) => {
       this.handleGmRollInfoChanges(dto);
     })
+    this.charChangeService.charChanged$.subscribe((dto) => { 
+        // console.log("subscribed to event from roll info component: ",dto.boxIndex," event: ", dto.name)
+        if (dto.boxIndex === this.playerBoxNum )
+           this.charName = dto.name
+        }
+    );
   }
 
   private initRollInfoForm() {

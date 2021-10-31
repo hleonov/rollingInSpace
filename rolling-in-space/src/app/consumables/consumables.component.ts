@@ -5,24 +5,28 @@ import { StatsDto } from '../models/dto/StatsDto';
 import { CharacterConsumables } from '../models/entity/character-consumables';
 import { WebsocketService } from "../services/websocket.service";
 import { StatsFormObject } from '../models/entity/StatsFormObject';
+import { CharChangeService } from '../services/char-change.service';
 
 @Component({
   selector: 'app-consumables',
   templateUrl: './consumables.component.html',
   styleUrls: ['./consumables.component.css'],
   providers: [WebsocketService],
-  inputs: ['currentChar', 'parentStatsForm']
+  inputs: ['currentChar', 'parentStatsForm', 'playerBoxNum']
 })
 export class ConsumablesComponent implements OnInit {
   @Input() currentChar : CharacterConsumables;
   @Input() charList : CharacterConsumables[]
+  @Input() playerBoxNum : number;
+
   public pointsToAllocate = 0;
   public statForm : FormGroup;
   public statsFormObject : StatsFormObject
   
   constructor(
     private formBuilder: FormBuilder,
-    public webSocketService: WebsocketService) {
+    public webSocketService: WebsocketService, 
+    private charChangeService : CharChangeService) {
 
   }
   
@@ -98,6 +102,7 @@ export class ConsumablesComponent implements OnInit {
 
   onCharChange() {
     this.handleStatsChange(this.currentChar);
+    this.charChangeService.changeChar({ boxIndex: this.playerBoxNum, name: this.currentChar.name})
   }
   
   rest() {
