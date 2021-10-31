@@ -86,7 +86,6 @@ export class RollService {
       return successCounter;
     }
     if (roll == this.AUTOMATIC_SUCCESS) { //critical success, add another die
-      //console.log("rolled 6! adding a roll...")
       this.webSocketService.sendChatLogMessage("=> rolled "+roll+"! adding a roll...")
 
       successCounter++
@@ -97,7 +96,6 @@ export class RollService {
 
   rollDie(): number {
     let rolled = Math.floor(Math.random() * 6) + 1;
-    //console.log("rolled: " + rolled);
     return rolled;
   }
 }

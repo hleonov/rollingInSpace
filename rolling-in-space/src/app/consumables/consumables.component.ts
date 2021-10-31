@@ -109,22 +109,20 @@ export class ConsumablesComponent implements OnInit {
 
   balanceRested(stats: any) {
     if (this.pointsToAllocate > 0) {
-
       console.log("balancing rested with stats: " + stats)
-      debugger
-      let updated: number = this.updatedStat(this.statsFormObject, stats)
-      this.pointsToAllocate -= updated
+      this.pointsToAllocate -= this.getDiffFromUpdatedStat(this.statsFormObject, stats)
     }
   }
 
-   updatedStat(prevObj : any, newObj: any) : number {
-    var updated = Object.keys(newObj).filter(prop =>  (prop != "timesRested") && (prevObj[prop] !== newObj[prop]));
+   getDiffFromUpdatedStat(prevStats : any, newStats: any) : number {
+    var updated = Object.keys(newStats)
+        .filter(prop =>  (prop != "timesRested") && (prevStats[prop] !== newStats[prop]));
      if (updated.length == 0) {
        return 0;
      } else {
-
-       var diff = Object.keys(newObj).filter(prop => (prop != "timesRested") && (prevObj[prop] !== newObj[prop])).map(prop => newObj[prop] - prevObj[prop])
-
+       var diff = Object.keys(newStats)
+          .filter(prop => (prop != "timesRested") && (prevStats[prop] !== newStats[prop]))
+          .map(prop => newStats[prop] - prevStats[prop])
        console.log("diff property: " + updated);
        console.log("diff is: " + diff[0]);
        return diff[0];
