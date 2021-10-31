@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Tactic } from "../models/entity/Tactic";
 import { TacticTable } from "../models/entity/TacticTable";
+import { WebsocketService } from "./websocket.service";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,8 @@ import { TacticTable } from "../models/entity/TacticTable";
 export class RollService {
   readonly AUTOMATIC_SUCCESS = 6;
 
-  constructor(private tacticTable: TacticTable) { }
+  constructor(private tacticTable: TacticTable,
+    public webSocketService: WebsocketService ) { }
 
   rollDice(numDice  : number,  pcTactic: Tactic, TN : number, gmTactic: Tactic) {
     let successCounter = 0;
@@ -20,7 +22,7 @@ export class RollService {
     let [adjustedDiceNum, adjustedTN] = this.adjustDiceAndTN(numDice, modifiedTN);
     console.log("number of dice to roll: "+numDice+" adjusted: "+adjustedDiceNum);
     console.log("target number: "+TN+" adjusted: "+adjustedTN);
-
+    this.webSocketService.sendChatLogMessage("TN: "+ adjustedTN+" Dice: "+adjustedDiceNum)
     //step 3: roll each die from dice pool
     for (let i = 0; i < adjustedDiceNum; i++) {
       successCounter = this.performRollRoutine(adjustedTN, successCounter);
@@ -77,12 +79,16 @@ export class RollService {
   //step 3
   performRollRoutine(TN: number, successCounter: number): number {
     let roll = this.rollDie();
-
+    if (roll < this.AUTOMATIC_SUCCESS)
+      this.webSocketService.sendChatLogMessage("=> rolled: "+roll)
+    
     if (roll < TN) { //failure
       return successCounter;
     }
     if (roll == this.AUTOMATIC_SUCCESS) { //critical success, add another die
-      console.log("rolled 6! adding a roll...")
+      //console.log("rolled 6! adding a roll...")
+      this.webSocketService.sendChatLogMessage("=> rolled "+roll+"! adding a roll...")
+
       successCounter++
       return this.performRollRoutine(TN, successCounter);
     }
@@ -91,7 +97,7 @@ export class RollService {
 
   rollDie(): number {
     let rolled = Math.floor(Math.random() * 6) + 1;
-    console.log("rolled: " + rolled);
+    //console.log("rolled: " + rolled);
     return rolled;
   }
 }

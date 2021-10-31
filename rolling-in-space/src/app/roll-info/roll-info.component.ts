@@ -30,7 +30,8 @@ export class RollInfoComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, 
-    private webSocketService: WebsocketService, private rollService: RollService) { 
+    private webSocketService: WebsocketService, 
+    private rollService: RollService) { 
     this.numOfSuccesses = 0;
    this.initRollInfoForm();
   }
@@ -119,6 +120,7 @@ handleGmRollInfoChanges(dto : GmRollInfoDto) {
 }
 
 rollAndSync() {
+  this.webSocketService.sendChatLogMessage(this.charName+" is rolling...")
     this.numOfSuccesses = this.rollService.rollDice(
       this.rollInfoForm.get(this.playerGroup)?.get("dicePool")?.value,
       this.rollInfoForm.get(this.playerGroup)?.get("playerTactic")?.value,
@@ -129,6 +131,7 @@ rollAndSync() {
     // sync others
     this.webSocketService.sendRollInfoDto(this.createPlayerRollInfoDto({}));
     this.webSocketService.sendGmRollInfoDto(this.createGmRollInfoDto({gameMasterTactic: this.theGmTactic, exposeGMTactic: true}));
+    this.webSocketService.sendChatLogMessage("#Successes: "+this.numOfSuccesses)
   }
 
   readyToRoll() : boolean{

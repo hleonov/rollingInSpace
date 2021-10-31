@@ -116,7 +116,7 @@ export class WebsocketService {
   }
 
   //send message into chat log
-  sendChatMessage(message : string) {
+  sendChatLogMessage(message : string) {
     this.stompClient.send('/topic/chatlog',
     {},
     JSON.stringify(message));

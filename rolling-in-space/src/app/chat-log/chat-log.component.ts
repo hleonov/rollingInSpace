@@ -22,7 +22,7 @@ export class ChatLogComponent implements OnInit {
   }  
   
   sendMessage() {    
-    this.webSocketService.sendChatMessage(this.newmessage);
+    this.webSocketService.sendChatLogMessage(this.newmessage);
     this.newmessage = "";  
   }  
   
