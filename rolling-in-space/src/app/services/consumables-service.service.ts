@@ -1,11 +1,10 @@
 import { Injectable, isDevMode} from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CharacterConsumables } from '../models/entity/character-consumables';
 import { Subject } from 'rxjs';
 import { WebsocketService } from './websocket.service';
-import { StatsDto } from '../models/dto/StatsDto';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,7 @@ export class ConsumablesService {
   
   constructor(private httpClient: HttpClient, private wsService: WebsocketService) {
     if (isDevMode()) {
-     // this.REST_API_SERVER = "http://localhost:8080";
+      this.REST_API_SERVER = "http://localhost:8080";
       console.log(this.REST_API_SERVER);
     }
   }
@@ -59,16 +58,3 @@ export class ConsumablesService {
 
   }
 }
-  
-
-//   public addNewRecord(){
-//     let bodyString = JSON.stringify(this.model); // Stringify payload
-//     let headers      = new Headers({ 'Content-Type': 'application/json' }); // ... Set content type to JSON
-//     let options       = new RequestOptions({ headers: headers }); // Create a request option
-
-//     this.http.post("http://localhost:3000/posts", this.model, options) // ...using post request
-//                      .map(res => res.json()) // ...and calling .json() on the response to return data
-//                      .catch((error:any) => Observable.throw(error.json().error || 'Server error')) //...errors if
-//                      .subscribe();
-// }
-
