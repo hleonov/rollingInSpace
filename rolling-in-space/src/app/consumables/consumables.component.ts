@@ -32,7 +32,7 @@ export class ConsumablesComponent implements OnInit {
   
   ngOnInit(): void{
     this.webSocketService.connect();
-    this.webSocketService.statChangedEvents.subscribe(dto => {
+    this.webSocketService.statsEvents$.subscribe(dto => {
       this.handleStatsChange(dto);
     })
     this.addStatsForm(this.currentChar)

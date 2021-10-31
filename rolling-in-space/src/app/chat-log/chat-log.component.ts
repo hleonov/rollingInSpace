@@ -16,7 +16,7 @@ export class ChatLogComponent implements OnInit {
   
   ngOnInit() {    
     this.webSocketService.connect();  
-    this.webSocketService.chatLogEvents.subscribe( message => {
+    this.webSocketService.chatLogEVents$.subscribe( message => {
       this.showMessage(message);
     })
   }  

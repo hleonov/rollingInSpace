@@ -18,6 +18,11 @@ export class WebsocketService {
   private _playerRollInfoEvents : Subject<PlayerRollInfoDto> = new Subject();
   private _gmInfoEvents : Subject<GmRollInfoDto> = new Subject();
   private _chatlogEvents : Subject<string> = new Subject();
+  
+  statsEvents$ : Observable<StatsDto> = this._statsEvents.asObservable();
+  playerRollEvents$ : Observable<PlayerRollInfoDto> = this._playerRollInfoEvents.asObservable();
+  gmEvents$ : Observable<GmRollInfoDto> = this._gmInfoEvents.asObservable();
+  chatLogEVents$ : Observable<string> = this._chatlogEvents.asObservable();
 
   constructor() { 
     if (isDevMode()) {
@@ -34,52 +39,19 @@ export class WebsocketService {
       this.stompClient.connect({}, function (frame : any) {
         console.log('Connected inside Websocket service: ' + frame);
         _this.stompClient.subscribe('/topic/consume_stats', function (wsEvent :any) { //consume stats changes from backend (WS)
-          _this.handleStatsEvent(wsEvent);
+          _this._statsEvents.next(JSON.parse(wsEvent.body));
         });
         _this.stompClient.subscribe('/topic/consume_roll', function (wsEvent :any) { //consume player roll info changes from backend (WS)
-          _this.handlePlayerInfoEvent(wsEvent);
+          _this._playerRollInfoEvents.next(JSON.parse(wsEvent.body));
         });
         _this.stompClient.subscribe('/topic/consume_gminfo', function (wsEvent :any) { //consume gm roll info changes from backend (WS)
-          _this.handleGmInfoEvents(wsEvent);
+          _this._gmInfoEvents.next(JSON.parse(wsEvent.body));
         });
         _this.stompClient.subscribe('/topic/consume_chatlog', function(wsEvent :any){ //consume chatlog from backend (WS)
-          _this.handleChatLogEvents(wsEvent);
+          _this._chatlogEvents.next(JSON.parse(wsEvent.body));
         });
       });
     }
-  }
-  public get statChangedEvents(): Observable<StatsDto> {
-    return this._statsEvents.asObservable();
-  }
-
-  public get PlayerRollInfoChangedEvents() : Observable<PlayerRollInfoDto> {
-    return this._playerRollInfoEvents.asObservable();
-  }
-
-  public get gmInfoChangedEvents() : Observable<GmRollInfoDto> {
-    return this._gmInfoEvents.asObservable();
-  }
-
-  public get chatLogEvents() : Observable<string> {
-    return this._chatlogEvents.asObservable();
-  }
-
-  handleStatsEvent(wsEvent:any) {
-      this._statsEvents.next(JSON.parse(wsEvent.body));
-  }
-
-  handlePlayerInfoEvent(wsEvent:any) {
-    this._playerRollInfoEvents.next(JSON.parse(wsEvent.body));
-  }
-
-  handleGmInfoEvents(wsEvent:any) {
-    //console.log("consuming info from roll box: "+wsEvent+"\n"+wsEvent.body);
-    this._gmInfoEvents.next(JSON.parse(wsEvent.body));
-  }
-
-  handleChatLogEvents(wsEvent:any) {
-    console.log(JSON.parse(wsEvent.body));
-    this._chatlogEvents.next(JSON.parse(wsEvent.body));
   }
 
   disconnect() {
