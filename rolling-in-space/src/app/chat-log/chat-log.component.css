@@ -2,14 +2,14 @@
     overflow-y: scroll;
     min-height: 40px;
     max-height: 550px;
-}
+    /* text-overflow: "-"; */
+    padding-right: 5px;
+    word-wrap: break-word;
+  overflow-wrap: break-word;
 
-.USER  {
-     color:rgb(104, 191, 241); 
-}
-
-.SYSTEM {
-    color:rgb(255, 251, 0);
+-webkit-hyphens: auto;
+   -moz-hyphens: auto;
+        hyphens: auto;
 }
 
 .inputs-area {
