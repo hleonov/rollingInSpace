@@ -5,6 +5,7 @@ import * as SockJS from 'sockjs-client';
 import { PlayerRollInfoDto } from "../models/dto/RollInfoDto";
 import { StatsDto } from "../models/dto/StatsDto";
 import { GmRollInfoDto } from "../models/dto/GmRollInfoDto";
+import { ChatLogMessageDto } from "../models/dto/ChatLogMessageDto";
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +18,12 @@ export class WebsocketService {
   private _statsEvents: Subject<StatsDto> = new Subject();
   private _playerRollInfoEvents : Subject<PlayerRollInfoDto> = new Subject();
   private _gmInfoEvents : Subject<GmRollInfoDto> = new Subject();
-  private _chatlogEvents : Subject<string> = new Subject();
+  private _chatlogEvents : Subject<ChatLogMessageDto> = new Subject();
   
   statsEvents$ : Observable<StatsDto> = this._statsEvents.asObservable();
   playerRollEvents$ : Observable<PlayerRollInfoDto> = this._playerRollInfoEvents.asObservable();
   gmEvents$ : Observable<GmRollInfoDto> = this._gmInfoEvents.asObservable();
-  chatLogEVents$ : Observable<string> = this._chatlogEvents.asObservable();
+  chatLogEVents$ : Observable<ChatLogMessageDto> = this._chatlogEvents.asObservable();
 
   constructor() { 
     if (isDevMode()) {
@@ -87,9 +88,9 @@ export class WebsocketService {
   }
 
   //send message into chat log
-  sendChatLogMessage(message : string) {
+  sendChatLogMessage(dto : ChatLogMessageDto) {
     this.stompClient.send('/topic/chatlog',
     {},
-    JSON.stringify(message));
+    JSON.stringify(dto));
   }
 }

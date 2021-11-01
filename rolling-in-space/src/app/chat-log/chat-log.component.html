@@ -1,6 +1,9 @@
 <div class="scrollable">
     <div *ngFor="let item of messageLog">
-        {{item}}
+        <div *ngIf="shouldBeShown(item.source)" 
+        [ngClass]="getCssClass(item.source)">
+        {{item.message}}
+        </div>
     </div>
 </div>
 <form #loginForm=ngForm>
@@ -8,7 +11,13 @@
         <textarea autocomplete="off" placeholder="Type Your Message..." name="newmessage" [(ngModel)]="newmessage"
             required></textarea>
         <br>
-        <button class="btn btn-primary" (click)="sendMessage()">Send</button>
+        <div style="color: beige">Alias: 
+            <input style="width: 115px" name="alias" [(ngModel)]="alias"  #ctrl="ngModel" required>
+        <br>
+        <button class="btn btn-primary" (click)="sendUserMessage()">Send</button>
         <button class="btn btn-primary" (click)="clearLog()">Clear log</button>
-    </div>
+        <button class="btn btn-primary" (click)="toggleSystemMessages()">
+            {{ showSystemMessages ? 'Hide rolls' : 'Show rolls' }}
+        </button>
+    </div></div>
 </form>

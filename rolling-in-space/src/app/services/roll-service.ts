@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { MessageSource } from "../models/dto/ChatLogMessageDto";
 import { Tactic } from "../models/entity/Tactic";
 import { TacticTable } from "../models/entity/TacticTable";
 import { WebsocketService } from "./websocket.service";
@@ -22,7 +23,8 @@ export class RollService {
     let [adjustedDiceNum, adjustedTN] = this.adjustDiceAndTN(numDice, modifiedTN);
     console.log("number of dice to roll: "+numDice+" adjusted: "+adjustedDiceNum);
     console.log("target number: "+TN+" adjusted: "+adjustedTN);
-    this.webSocketService.sendChatLogMessage("TN: "+ adjustedTN+" Dice: "+adjustedDiceNum)
+    this.webSocketService.sendChatLogMessage({message: "TN: "+ adjustedTN+" Dice: "+adjustedDiceNum, 
+                                              source: MessageSource.SYSTEM})
     //step 3: roll each die from dice pool
     for (let i = 0; i < adjustedDiceNum; i++) {
       successCounter = this.performRollRoutine(adjustedTN, successCounter);
@@ -80,13 +82,15 @@ export class RollService {
   performRollRoutine(TN: number, successCounter: number): number {
     let roll = this.rollDie();
     if (roll < this.AUTOMATIC_SUCCESS)
-      this.webSocketService.sendChatLogMessage("=> rolled: "+roll)
+      this.webSocketService.sendChatLogMessage({message: "=> rolled: "+roll, 
+                                                source: MessageSource.SYSTEM})
     
     if (roll < TN) { //failure
       return successCounter;
     }
     if (roll == this.AUTOMATIC_SUCCESS) { //critical success, add another die
-      this.webSocketService.sendChatLogMessage("=> rolled "+roll+"! adding a roll...")
+      this.webSocketService.sendChatLogMessage({message: "=> rolled "+roll+"! adding a roll...",
+                                                source: MessageSource.SYSTEM})
 
       successCounter++
       return this.performRollRoutine(TN, successCounter);

@@ -7,6 +7,7 @@ import { PlayerRollInfoDto as PlayerRollInfoDto } from '../models/dto/RollInfoDt
 import { GmRollInfoDto } from '../models/dto/GmRollInfoDto';
 import { RollService } from '../services/roll-service';
 import { CharChangeService } from '../services/char-change.service';
+import { MessageSource } from '../models/dto/ChatLogMessageDto';
 
 @Component({
   selector: 'app-roll-info',
@@ -128,7 +129,8 @@ handleGmRollInfoChanges(dto : GmRollInfoDto) {
 }
 
 rollAndSync() {
-  this.webSocketService.sendChatLogMessage(this.charName+" is rolling...")
+  this.webSocketService.sendChatLogMessage({message: this.charName+" is rolling...",
+                                            source: MessageSource.SYSTEM})
     this.numOfSuccesses = this.rollService.rollDice(
       this.rollInfoForm.get(this.playerGroup)?.get("dicePool")?.value,
       this.rollInfoForm.get(this.playerGroup)?.get("playerTactic")?.value,
@@ -139,7 +141,8 @@ rollAndSync() {
     // sync others
     this.webSocketService.sendRollInfoDto(this.createPlayerRollInfoDto({}));
     this.webSocketService.sendGmRollInfoDto(this.createGmRollInfoDto({gameMasterTactic: this.theGmTactic, exposeGMTactic: true}));
-    this.webSocketService.sendChatLogMessage("#Successes: "+this.numOfSuccesses)
+    this.webSocketService.sendChatLogMessage({message: "#Successes: "+this.numOfSuccesses,
+                                              source: MessageSource.SYSTEM})
   }
 
   readyToRoll() : boolean{

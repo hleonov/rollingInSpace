@@ -21,7 +21,6 @@ export class NewCharacterComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<NewCharacterComponent>,
     private consumablesService : ConsumablesService,
-   // private refreshService : RefreshService
   ) {
   }
 
