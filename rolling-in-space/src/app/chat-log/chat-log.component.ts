@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ChatLogMessageDto, MessageSource } from '../models/dto/ChatLogMessageDto';
 import { WebsocketService } from '../services/websocket.service';
 
@@ -8,8 +8,10 @@ import { WebsocketService } from '../services/websocket.service';
   styleUrls: ['./chat-log.component.css'],
   providers: [WebsocketService],
 })
-export class ChatLogComponent implements OnInit {
+export class ChatLogComponent implements OnInit, AfterViewChecked {
 
+  @ViewChild('scrollBottom') private scrollBottom: ElementRef;
+  
   messageLog: ChatLogMessageDto[] = [];  
   newmessage: string; 
   alias: string = '';
@@ -20,19 +22,25 @@ export class ChatLogComponent implements OnInit {
   ngOnInit() {    
     this.webSocketService.connect();  
     this.webSocketService.chatLogEVents$.subscribe( dto => {
-      this.storeMessage(dto);
+      this.messageLog.push(dto);  
     })
   }  
   
+  ngAfterViewChecked() {        
+    this.scrollToBottom();        
+   } 
+
+   scrollToBottom(): void {
+       try {
+           this.scrollBottom.nativeElement.scrollTop = this.scrollBottom.nativeElement.scrollHeight;
+       } catch(err) { }
+   }
+
   sendUserMessage() {    
     this.webSocketService.sendChatLogMessage({message: this.alias+": "+this.newmessage, 
                                               source: MessageSource.USER});
     this.newmessage = "";
   }  
-  
-  storeMessage(dto : ChatLogMessageDto) {
-     this.messageLog.push(dto);  
-  }
 
   clearLog() {
     this.messageLog = []
@@ -42,7 +50,7 @@ export class ChatLogComponent implements OnInit {
     this.showSystemMessages = !this.showSystemMessages
   }
 
-  shouldBeShown(source : MessageSource): boolean {
+  itemShouldBeShown(source : MessageSource): boolean {
     return ( (source === MessageSource.USER) || (this.showSystemMessages))
   }
 

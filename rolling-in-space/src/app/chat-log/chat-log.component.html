@@ -1,12 +1,12 @@
-<div class="scrollable">
+<div #scrollBottom class="scrollable">
     <div *ngFor="let item of messageLog">
-        <div *ngIf="shouldBeShown(item.source)" 
+        <div *ngIf="itemShouldBeShown(item.source)" 
         [ngClass]="getCssClass(item.source)">
         {{item.message}}
         </div>
     </div>
 </div>
-<form #loginForm=ngForm>
+<form>
     <div><br>
         <textarea autocomplete="off" placeholder="Type Your Message..." name="newmessage" [(ngModel)]="newmessage"
             required></textarea>
