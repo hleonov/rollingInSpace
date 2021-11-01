@@ -17,10 +17,10 @@
             <div style="display: flex;">
                 <div><ngx-colors ngx-colors-trigger [(ngModel)]="userColor" [ngModelOptions]="{standalone: true}"></ngx-colors></div>
                 <div>
-                    <button mat-raised-button class="small-icon-button" color="primary" (click)="toggleSystemMessages()">
+                    <button mat-raised-button class="small-mat-button" color="primary" (click)="toggleSystemMessages()">
                         {{ showSystemMessages ? 'Hide rolls' : 'Show rolls' }}
                     </button>
-                    <button mat-raised-button class="small-icon-button" color="primary" (click)="clearLog()">Clear log</button>
+                    <button mat-raised-button class="small-mat-button" color="primary" (click)="clearLog()">Clear log</button>
                 </div>
             </div>
         </div>

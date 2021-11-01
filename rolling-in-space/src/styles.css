@@ -24,7 +24,7 @@ input[type=number] { /*::-webkit-inner-spin-button {*/
   appearance: textfield;
   margin: 0;  */
 }
-.small-icon-button {
+.small-mat-button {
   width: 75px !important;
   height: 26px !important;
   line-height: 24px !important;
@@ -32,6 +32,10 @@ input[type=number] { /*::-webkit-inner-spin-button {*/
   padding-right: 10px !important;
   margin: 10%;    
   border: 1px solid white !important;
+  background-color: rgb(49, 44, 44) !important;
+}
+
+.normal-mat-button {
   background-color: rgb(49, 44, 44) !important;
 }
 .top_header {
