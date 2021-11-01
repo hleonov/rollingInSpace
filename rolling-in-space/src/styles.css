@@ -31,8 +31,8 @@ input[type=number] { /*::-webkit-inner-spin-button {*/
   padding-left: 2px !important;
   padding-right: 10px !important;
   margin: 10%;    
-  border: 2px solid white !important;
-  
+  border: 1px solid white !important;
+  background-color: rgb(49, 44, 44) !important;
 }
 .top_header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.8);

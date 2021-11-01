@@ -7,20 +7,20 @@
 </div>
 <form>
     <div><br>
-        <textarea autocomplete="off" placeholder="Type Your Message..." name="newmessage" [(ngModel)]="newmessage"
+        <textarea class="inputs-area" autocomplete="off" placeholder="Type Your Message..." name="newmessage" [(ngModel)]="newmessage"
             required (keydown.enter)="sendUserMessage()"></textarea>
         <br>
         <div style="color: beige">Alias:
-            <input style="width: 115px" name="alias" [(ngModel)]="alias" #ctrl="ngModel" required>
+            <input class="inputs-area" style="width: 115px" name="alias" [(ngModel)]="alias" #ctrl="ngModel" required>
             <br>
             <!-- <button class="btn btn-primary" (click)="sendUserMessage()">Send</button> -->
             <div style="display: flex;">
                 <div><ngx-colors ngx-colors-trigger [(ngModel)]="userColor" [ngModelOptions]="{standalone: true}"></ngx-colors></div>
                 <div>
-                    <button mat-raised-button class="small-icon-button" color="Accent" (click)="toggleSystemMessages()">
+                    <button mat-raised-button class="small-icon-button" color="primary" (click)="toggleSystemMessages()">
                         {{ showSystemMessages ? 'Hide rolls' : 'Show rolls' }}
                     </button>
-                    <button mat-raised-button class="small-icon-button" color="Accent" (click)="clearLog()">Clear log</button>
+                    <button mat-raised-button class="small-icon-button" color="primary" (click)="clearLog()">Clear log</button>
                 </div>
             </div>
         </div>
