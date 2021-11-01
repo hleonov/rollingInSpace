@@ -24,7 +24,16 @@ input[type=number] { /*::-webkit-inner-spin-button {*/
   appearance: textfield;
   margin: 0;  */
 }
-
+.small-icon-button {
+  width: 75px !important;
+  height: 26px !important;
+  line-height: 24px !important;
+  padding-left: 2px !important;
+  padding-right: 10px !important;
+  margin: 10%;    
+  border: 2px solid white !important;
+  
+}
 .top_header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.8);
   text-align: center;

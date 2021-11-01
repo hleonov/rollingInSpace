@@ -16,6 +16,8 @@ export class ChatLogComponent implements OnInit, AfterViewChecked {
   newmessage: string; 
   alias: string = '';
   showSystemMessages : boolean = true;
+  userColor: string = '#2889e9'
+  DEFAULT_COLOR : string = "rgb(255, 251, 0)"
 
   constructor(public webSocketService: WebsocketService) {}  
   
@@ -38,7 +40,9 @@ export class ChatLogComponent implements OnInit, AfterViewChecked {
 
   sendUserMessage() {    
     this.webSocketService.sendChatLogMessage({message: this.alias+": "+this.newmessage, 
-                                              source: MessageSource.USER});
+                                              source: MessageSource.USER,
+                                              color: this.userColor
+                                            });
     this.newmessage = "";
   }  
 
@@ -54,7 +58,12 @@ export class ChatLogComponent implements OnInit, AfterViewChecked {
     return ( (source === MessageSource.USER) || (this.showSystemMessages))
   }
 
-  getCssClass(source : MessageSource) {
-    return [source.toString()]
+  getStyles(item : ChatLogMessageDto) {
+    let styles : any = {};
+    styles.color = (item.source === MessageSource.USER) ? item.color : this.DEFAULT_COLOR;
+    return styles;
   }
+  
 }
+
+
