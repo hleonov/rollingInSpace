@@ -36,6 +36,8 @@ export class WebsocketService {
     if (this.stompClient == null) {
       let webSocket = new SockJS(this.WS_URL);
       this.stompClient = Stomp.over(webSocket);
+      this.stompClient.heartbeat.outgoing = 5000;
+      this.stompClient.heartbeat.incoming = 5000;
       const _this = this;
       this.stompClient.connect({}, function (frame : any) {
         console.log('Connected inside Websocket service: ' + frame);
