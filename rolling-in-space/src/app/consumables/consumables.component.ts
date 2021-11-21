@@ -130,7 +130,7 @@ export class ConsumablesComponent implements OnInit {
           .map(prop => newStats[prop] - prevStats[prop])
        console.log("diff property: " + updated);
        console.log("diff is: " + diff[0]);
-       return diff[0];
+       return diff[0] >= 0 ? diff[0] : 0;
      }
    }
 }
