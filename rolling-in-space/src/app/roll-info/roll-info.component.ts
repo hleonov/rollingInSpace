@@ -141,8 +141,6 @@ rollAndSync() {
     // sync others
     this.webSocketService.sendRollInfoDto(this.createPlayerRollInfoDto({}));
     this.webSocketService.sendGmRollInfoDto(this.createGmRollInfoDto({gameMasterTactic: this.theGmTactic, exposeGMTactic: true}));
-    this.webSocketService.sendChatLogMessage({message: "#Successes: "+this.numOfSuccesses,
-                                              source: MessageSource.SYSTEM})
   }
 
   readyToRoll() : boolean{

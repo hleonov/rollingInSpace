@@ -1,15 +1,16 @@
 .scrollable {
-    overflow-y: scroll;
-    min-height: 40px;
-    max-height: 550px;
-    /* text-overflow: "-"; */
-    padding-right: 5px;
-    word-wrap: break-word;
+  overflow-y: scroll;
+  min-height: 40px;
+  max-height: 550px;
+  /* text-overflow: "-"; */
+  padding-right: 5px;
+  word-wrap: break-word;
   overflow-wrap: break-word;
 
--webkit-hyphens: auto;
-   -moz-hyphens: auto;
-        hyphens: auto;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+  white-space: pre;
 }
 
 .inputs-area {

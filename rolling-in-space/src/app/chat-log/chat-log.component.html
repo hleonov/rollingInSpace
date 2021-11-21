@@ -7,7 +7,8 @@
 </div>
 <form>
     <div><br>
-        <textarea class="inputs-area" autocomplete="off" placeholder="Type Your Message..." name="newmessage" [(ngModel)]="newmessage"
+        <textarea class="inputs-area" autocomplete="off" placeholder="Type Your Message..." 
+            name="newmessage" [(ngModel)]="newmessage"
             required (keydown.enter)="sendUserMessage()"></textarea>
         <br>
         <div style="color: beige">Alias:

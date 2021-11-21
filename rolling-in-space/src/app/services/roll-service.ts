@@ -23,12 +23,15 @@ export class RollService {
     let [adjustedDiceNum, adjustedTN] = this.adjustDiceAndTN(numDice, modifiedTN);
     console.log("number of dice to roll: "+numDice+" adjusted: "+adjustedDiceNum);
     console.log("target number: "+TN+" adjusted: "+adjustedTN);
-    this.webSocketService.sendChatLogMessage({message: "TN: "+ adjustedTN+" Dice: "+adjustedDiceNum, 
-                                              source: MessageSource.SYSTEM})
+   
     //step 3: roll each die from dice pool
     for (let i = 0; i < adjustedDiceNum; i++) {
       successCounter = this.performRollRoutine(adjustedTN, successCounter);
     }
+    setTimeout(()=>{ 
+      this.webSocketService.sendChatLogMessage({message: "TN: "+ adjustedTN+", Dice: "
+        +adjustedDiceNum+"\n #Successes: "+successCounter, source: MessageSource.SYSTEM})
+    },500)
     return successCounter;
   }
   
