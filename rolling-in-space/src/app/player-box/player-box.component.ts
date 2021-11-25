@@ -44,9 +44,10 @@ export class PlayerBoxComponent implements OnInit {
 
   filterGroup(): CharacterConsumables[] {
     let todaysGroup = this.chooseGroupByDay();
-    return this.charStatsList.filter(char => todaysGroup.includes(char.name))
+    return this.charStatsList
+      .filter(char => todaysGroup.includes(char.name))
+      .sort(function(a,b){return a.name.localeCompare(b.name); })
   }
-
 
   private chooseGroupByDay() {
     let todaysGroup = this.tuesdayGroup;
