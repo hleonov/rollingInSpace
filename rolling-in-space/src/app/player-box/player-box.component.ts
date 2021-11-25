@@ -50,19 +50,18 @@ export class PlayerBoxComponent implements OnInit {
   }
 
   private chooseGroupByDay() {
-    let todaysGroup = this.tuesdayGroup;
+    let todaysGroup = this.fridayGroup;
     if (isDevMode()) //if dev mode, include everyone
       return todaysGroup = this.charStatsList.map(char => char.name);
     
     switch (new Date().getDay()) {
-      case 0: //Sunday
-      case 4: //Thursday
-      case 5: //Friday
-      case 6: //Saturday
-        todaysGroup = this.fridayGroup;
+      case 1: //Monday
+      case 2: //Tuesday
+      case 3: //Wednesday
+        todaysGroup = this.tuesdayGroup;
         break;
       default:
-        todaysGroup = this.tuesdayGroup;
+        todaysGroup = this.fridayGroup;
         break;
     }
     return todaysGroup;
