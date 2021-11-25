@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, isDevMode, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ChatLogComponent } from '../chat-log/chat-log.component';
 
 import { CharacterConsumables } from '../models/entity/character-consumables';
 import { NewCharacterComponent } from '../new-character/new-character.component';
@@ -15,6 +16,10 @@ export class PlayerBoxComponent implements OnInit {
   
   charStatsList : CharacterConsumables[] = [];
   enableGM : FormControl;
+
+  //easy solution to load the right groups
+  fridayGroup = ["Dave Doherty", "Glyph Glory", "Maeve Murphy", "Sergei Shubov"]
+  tuesdayGroup = ["Alcide", "Henry O'Hoolihan", "Marcel Abdulin", "Zelena Zweig"]
 
   constructor(private consumableService : ConsumablesService,
      public dialog: MatDialog) { 
@@ -37,5 +42,29 @@ export class PlayerBoxComponent implements OnInit {
     });
   }
 
+  filterGroup(): CharacterConsumables[] {
+    let todaysGroup = this.chooseGroupByDay();
+    return this.charStatsList.filter(char => todaysGroup.includes(char.name))
+  }
+
+
+  private chooseGroupByDay() {
+    let todaysGroup = this.tuesdayGroup;
+    if (isDevMode()) //if dev mode, include everyone
+      return todaysGroup = this.charStatsList.map(char => char.name);
+    
+    switch (new Date().getDay()) {
+      case 0: //Sunday
+      case 4: //Thursday
+      case 5: //Friday
+      case 6: //Saturday
+        todaysGroup = this.fridayGroup;
+        break;
+      default:
+        todaysGroup = this.tuesdayGroup;
+        break;
+    }
+    return todaysGroup;
+  }
 }
 

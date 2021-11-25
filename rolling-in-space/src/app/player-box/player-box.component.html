@@ -1,6 +1,6 @@
 <div id="players_container">
   <ol id="players_list">
-    <li *ngFor="let character of charStatsList | slice:0:4; index as i"
+    <li *ngFor="let character of filterGroup() | slice:0:4; index as i"
        class="player_card" id="{{ 'player_card_' + i }}"> 
        <app-consumables [currentChar]="character" [charList]="charStatsList" [playerBoxNum]="i"></app-consumables>
        <div class="screw top left"></div>
